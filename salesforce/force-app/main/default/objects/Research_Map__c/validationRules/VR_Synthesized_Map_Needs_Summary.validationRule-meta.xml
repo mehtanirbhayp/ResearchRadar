@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>VR_Synthesized_Map_Needs_Summary</fullName>
+    <active>true</active>
+    <errorConditionFormula>ISPICKVAL(Status__c, 'Synthesized') && ISBLANK(Synthesis_Summary__c)</errorConditionFormula>
+    <errorDisplayField>Synthesis_Summary__c</errorDisplayField>
+    <errorMessage>A Research Map cannot be marked Synthesized without an AI/Literature synthesis summary.</errorMessage>
+</ValidationRule>

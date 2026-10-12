@@ -1,0 +1,36 @@
+.gap-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.gap-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.problem-text {
+    color: #1e293b;
+    line-height: 1.4;
+}
+
+.experiment-box {
+    background-color: #f8fafc;
+    border-left: 3px solid #3b82f6;
+    border-radius: 4px;
+}
+
+.status-indicator {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #475569;
+    letter-spacing: 0.5px;
+}
+
+.action-bar {
+    border-top: 1px solid #f1f5f9;
+    padding-top: 8px;
+}

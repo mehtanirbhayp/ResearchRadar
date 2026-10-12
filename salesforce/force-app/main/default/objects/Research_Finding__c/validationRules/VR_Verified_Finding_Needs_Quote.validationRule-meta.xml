@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>VR_Verified_Finding_Needs_Quote</fullName>
+    <active>true</active>
+    <errorConditionFormula>ISPICKVAL(Verification_Status__c, 'Verified') && (ISBLANK(Exact_Quote__c) || ISBLANK(Page_Number__c))</errorConditionFormula>
+    <errorDisplayField>Exact_Quote__c</errorDisplayField>
+    <errorMessage>A verified claim must include the exact verbatim quote and the page number where it appears.</errorMessage>
+</ValidationRule>

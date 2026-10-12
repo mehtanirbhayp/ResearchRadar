@@ -1,0 +1,83 @@
+<template>
+    <lightning-card title="Ereuna Literature Synthesis Engine" icon-name="custom:custom55">
+        <div class="slds-p-around_medium container">
+            <div class="header-banner slds-p-around_medium slds-m-bottom_medium">
+                <div class="slds-grid slds-grid_vertical-align-center">
+                    <div class="slds-col">
+                        <h2 class="title">Research, on your radar.</h2>
+                        <p class="subtitle">Turn any cloud computing or computer science topic into an evidence-verified research map.</p>
+                    </div>
+                    <div class="slds-col_bump-left">
+                        <lightning-button
+                            variant="neutral"
+                            label="Seed Cloud Demo Data"
+                            icon-name="utility:database"
+                            onclick={handleSeedDemoData}
+                            disabled={isLoading}>
+                        </lightning-button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Bar Form -->
+            <div class="slds-grid slds-gutters slds-m-bottom_medium">
+                <div class="slds-col slds-size_8-of-12">
+                    <lightning-input
+                        type="search"
+                        placeholder="e.g. Serverless cold-start latency mitigation or Kubernetes scheduling..."
+                        value={topicQuery}
+                        onchange={handleTopicChange}
+                        disabled={isLoading}
+                        label="Research Topic Query">
+                    </lightning-input>
+                </div>
+                <div class="slds-col slds-size_4-of-12">
+                    <lightning-combobox
+                        name="discipline"
+                        label="Discipline Focus"
+                        value={selectedDiscipline}
+                        placeholder="Select Discipline"
+                        options={disciplineOptions}
+                        onchange={handleDisciplineChange}
+                        disabled={isLoading}>
+                    </lightning-combobox>
+                </div>
+            </div>
+
+            <div class="slds-m-bottom_large">
+                <lightning-button
+                    variant="brand"
+                    label="Generate Research Map"
+                    icon-name="utility:search"
+                    onclick={handleSynthesize}
+                    disabled={isLoading}
+                    class="action-button">
+                </lightning-button>
+            </div>
+
+            <!-- Pipeline Progress Tracker -->
+            <template if:true={isLoading}>
+                <div class="pipeline-tracker slds-box slds-theme_shade slds-p-around_medium slds-m-bottom_medium">
+                    <h3 class="slds-text-heading_small slds-m-bottom_small">
+                        <lightning-icon icon-name="utility:sync" size="x-small" class="spinning-icon slds-m-right_x-small"></lightning-icon>
+                        Autonomous Synthesis Pipeline Running...
+                    </h3>
+                    <lightning-progress-indicator current-step={pipelineStep} type="path" variant="base">
+                        <lightning-progress-step label="Index Search" value="1"></lightning-progress-step>
+                        <lightning-progress-step label="Fetch Open Text" value="2"></lightning-progress-step>
+                        <lightning-progress-step label="Evidence Extraction" value="3"></lightning-progress-step>
+                        <lightning-progress-step label="Verification &amp; Gaps" value="4"></lightning-progress-step>
+                    </lightning-progress-indicator>
+                    <p class="slds-text-align_center slds-m-top_small slds-text-color_weak slds-text-title_bold">{statusMessage}</p>
+                </div>
+            </template>
+
+            <!-- Status / Feedback Toast Replacement if needed -->
+            <template if:true={feedbackMessage}>
+                <div class={feedbackClass}>
+                    <p>{feedbackMessage}</p>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

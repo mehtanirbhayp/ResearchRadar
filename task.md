@@ -12,4 +12,13 @@
   - [x] Accessibility & Contrast / Touch Target Audit <!-- id: 504 -->
   - [x] Draft Play Store Listing (`docs/PLAY_STORE_LISTING.md`) <!-- id: 505 -->
   - [x] Configure R8 / ProGuard rules and verify release build <!-- id: 506 -->
-  - [x] Execute full backend and Android test suites <!-- id: 507 -->
+- [x] Phase 6: Salesforce Platform (BMEE355E Cloud Computing) <!-- id: 6 -->
+  - [x] Salesforce DX Project scaffolding (`sfdx-project.json`) <!-- id: 601 -->
+  - [x] Custom Schema (7 Custom Objects, Master-Detail, Junction, Roll-Up Summaries) <!-- id: 602 -->
+  - [x] Validation Rules & Business Constraints <!-- id: 603 -->
+  - [x] Custom Application & Navigation Tabs (`Ereuna_Research_Radar`) <!-- id: 604 -->
+  - [x] Permission Set & Data Security (`Ereuna_Researcher_Access`) <!-- id: 605 -->
+  - [x] Apex Service & Controller (`EreunaController`, `EreunaDataService`) <!-- id: 606 -->
+  - [x] Apex Unit Tests (100% Pass, 96% Org-Wide Coverage) <!-- id: 607 -->
+  - [x] 5 Lightning Web Components (`ereunaTopicSearch`, `literatureCompareMatrix`, `citationNetworkGraph`, `gapExperimentTracker`, `ereunaDashboardHome`) <!-- id: 608 -->
+  - [x] Live Deployment & Sample Data Seeding in connected Developer Org <!-- id: 609 -->

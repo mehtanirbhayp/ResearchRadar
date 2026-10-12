@@ -1,0 +1,101 @@
+<template>
+    <lightning-card title="Literature Comparison Matrix" icon-name="standard:filter">
+        <div slot="actions">
+            <lightning-button-group>
+                <lightning-button label="Export CSV" icon-name="utility:download" onclick={handleExportCSV}></lightning-button>
+                <lightning-button label="Refresh" icon-name="utility:refresh" onclick={handleRefresh}></lightning-button>
+            </lightning-button-group>
+        </div>
+
+        <div class="slds-p-around_medium">
+            <template if:true={isLoading}>
+                <div class="slds-p-around_large slds-text-align_center">
+                    <lightning-spinner alternative-text="Loading literature matrix" size="medium"></lightning-spinner>
+                </div>
+            </template>
+
+            <template if:false={isLoading}>
+                <template if:true={hasPapers}>
+                    <div class="slds-table--header-fixed_container table-container">
+                        <table class="slds-table slds-table_bordered slds-table_cell-buffer slds-table_col-bordered">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th scope="col" style="width: 30%;">
+                                        <div class="slds-truncate" title="Paper Title">Paper Title</div>
+                                    </th>
+                                    <th scope="col" style="width: 15%;">
+                                        <div class="slds-truncate" title="Venue &amp; Year">Venue / Year</div>
+                                    </th>
+                                    <th scope="col" style="width: 12%;">
+                                        <div class="slds-truncate" title="Citations">Citations</div>
+                                    </th>
+                                    <th scope="col" style="width: 15%;">
+                                        <div class="slds-truncate" title="Relevance Score">Relevance</div>
+                                    </th>
+                                    <th scope="col" style="width: 28%;">
+                                        <div class="slds-truncate" title="Inclusion Rationale &amp; Links">Rationale &amp; Source</div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={paperRows} for:item="row">
+                                    <tr key={row.Id} class="slds-hint-parent">
+                                        <td data-label="Paper Title">
+                                            <div class="paper-title-cell">
+                                                <a href="javascript:void(0);" data-id={row.paperId} onclick={handleNavigateToPaper} class="slds-text-link_reset">
+                                                    <strong>{row.title}</strong>
+                                                </a>
+                                                <p class="slds-text-body_small slds-text-color_weak slds-m-top_xx-small">{row.authors}</p>
+                                            </div>
+                                        </td>
+                                        <td data-label="Venue / Year">
+                                            <div>{row.venue}</div>
+                                            <span class="slds-badge slds-badge_lightest slds-m-top_xx-small">{row.year}</span>
+                                        </td>
+                                        <td data-label="Citations">
+                                            <div class="citation-pill">
+                                                <lightning-icon icon-name="utility:graph" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
+                                                <span>{row.citations}</span>
+                                            </div>
+                                        </td>
+                                        <td data-label="Relevance Score">
+                                            <div class="slds-grid slds-grid_vertical-align-center">
+                                                <div class="slds-col slds-size_9-of-12">
+                                                    <lightning-progress-bar value={row.relevance} size="small" variant="circular"></lightning-progress-bar>
+                                                </div>
+                                                <div class="slds-col slds-size_3-of-12 slds-p-left_x-small slds-text-title_bold">
+                                                    {row.relevance}%
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td data-label="Inclusion Rationale &amp; Links">
+                                            <p class="slds-text-body_small slds-m-bottom_xx-small">{row.rationale}</p>
+                                            <template if:true={row.pdfUrl}>
+                                                <a href={row.pdfUrl} target="_blank" rel="noopener noreferrer" class="slds-button slds-button_outline-brand slds-m-right_xx-small custom-link-btn">
+                                                    PDF Source
+                                                </a>
+                                            </template>
+                                            <template if:true={row.openAccessUrl}>
+                                                <a href={row.openAccessUrl} target="_blank" rel="noopener noreferrer" class="slds-button slds-button_neutral custom-link-btn">
+                                                    Open Access
+                                                </a>
+                                            </template>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </template>
+
+                <template if:false={hasPapers}>
+                    <div class="slds-p-around_large slds-text-align_center slds-box slds-theme_shade">
+                        <lightning-icon icon-name="utility:inbox" size="large" class="slds-m-bottom_small"></lightning-icon>
+                        <p class="slds-text-heading_small">No papers associated with this Research Map yet.</p>
+                        <p class="slds-text-color_weak slds-m-top_xx-small">Use the Topic Search engine above to retrieve and synthesize papers.</p>
+                    </div>
+                </template>
+            </template>
+        </div>
+    </lightning-card>
+</template>

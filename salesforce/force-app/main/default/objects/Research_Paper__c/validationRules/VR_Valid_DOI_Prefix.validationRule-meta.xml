@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>VR_Valid_DOI_Prefix</fullName>
+    <active>true</active>
+    <errorConditionFormula>NOT(ISBLANK(DOI__c)) && NOT(BEGINS(DOI__c, '10.'))</errorConditionFormula>
+    <errorDisplayField>DOI__c</errorDisplayField>
+    <errorMessage>DOI must begin with the standard prefix '10.' (e.g., 10.1145/...)</errorMessage>
+</ValidationRule>

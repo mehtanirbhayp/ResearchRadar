@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>VR_Publication_Year_Range</fullName>
+    <active>true</active>
+    <errorConditionFormula>OR(Publication_Year__c &gt; YEAR(TODAY()), Publication_Year__c &lt; 1900)</errorConditionFormula>
+    <errorDisplayField>Publication_Year__c</errorDisplayField>
+    <errorMessage>Publication Year must be between 1900 and the current year.</errorMessage>
+</ValidationRule>

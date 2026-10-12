@@ -1,0 +1,114 @@
+<template>
+    <lightning-card title="Citation Network &amp; Influence Graph" icon-name="custom:custom90">
+        <div slot="actions">
+            <lightning-button label="Reset View" icon-name="utility:refresh" onclick={handleResetView}></lightning-button>
+        </div>
+
+        <div class="slds-p-around_medium">
+            <template if:true={isLoading}>
+                <div class="slds-p-around_large slds-text-align_center">
+                    <lightning-spinner alternative-text="Generating citation graph" size="medium"></lightning-spinner>
+                </div>
+            </template>
+
+            <template if:false={isLoading}>
+                <template if:true={hasGraphData}>
+                    <div class="slds-grid slds-gutters">
+                        <!-- Interactive SVG Canvas -->
+                        <div class="slds-col slds-size_8-of-12">
+                            <div class="graph-canvas-container">
+                                <svg class="network-svg" viewBox="0 0 700 450" preserveAspectRatio="xMidYMid meet">
+                                    <!-- Render Link Lines -->
+                                    <template for:each={renderLinks} for:item="link">
+                                        <line
+                                            key={link.id}
+                                            x1={link.x1}
+                                            y1={link.y1}
+                                            x2={link.x2}
+                                            y2={link.y2}
+                                            stroke="#64748b"
+                                            stroke-width="2"
+                                            stroke-opacity="0.6">
+                                        </line>
+                                    </template>
+
+                                    <!-- Render Nodes -->
+                                    <template for:each={renderNodes} for:item="node">
+                                        <g key={node.id} class="node-group" onclick={handleNodeClick} data-id={node.id}>
+                                            <circle
+                                                cx={node.x}
+                                                cy={node.y}
+                                                r={node.radius}
+                                                class={node.circleClass}
+                                                stroke="#ffffff"
+                                                stroke-width="3">
+                                            </circle>
+                                            <text
+                                                x={node.x}
+                                                y={node.textY}
+                                                text-anchor="middle"
+                                                class="node-label">
+                                                {node.shortLabel}
+                                            </text>
+                                            <text
+                                                x={node.x}
+                                                y={node.subTextY}
+                                                text-anchor="middle"
+                                                class="node-sublabel">
+                                                {node.citations} cites
+                                            </text>
+                                        </g>
+                                    </template>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- Node Detail Inspector Drawer -->
+                        <div class="slds-col slds-size_4-of-12">
+                            <template if:true={selectedNode}>
+                                <div class="slds-box slds-theme_shade detail-panel">
+                                    <span class="slds-badge slds-theme_info slds-m-bottom_x-small">{selectedNode.discipline}</span>
+                                    <h3 class="slds-text-heading_small slds-m-bottom_x-small"><strong>{selectedNode.label}</strong></h3>
+                                    <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_small">
+                                        <strong>Authors:</strong> {selectedNode.authors}
+                                    </p>
+                                    <div class="slds-grid slds-gutters slds-m-bottom_small">
+                                        <div class="slds-col">
+                                            <span class="slds-text-title">Year:</span>
+                                            <div class="slds-text-body_regular">{selectedNode.year}</div>
+                                        </div>
+                                        <div class="slds-col">
+                                            <span class="slds-text-title">Citations:</span>
+                                            <div class="slds-text-body_regular">{selectedNode.citations}</div>
+                                        </div>
+                                    </div>
+                                    <template if:true={selectedNode.url}>
+                                        <a href={selectedNode.url} target="_blank" rel="noopener noreferrer" class="slds-button slds-button_brand slds-button_stretch slds-m-top_small">
+                                            Open Research Article
+                                        </a>
+                                    </template>
+                                </div>
+                            </template>
+
+                            <template if:false={selectedNode}>
+                                <div class="slds-box slds-theme_shade slds-text-align_center slds-p-around_large">
+                                    <lightning-icon icon-name="utility:touch_action" size="medium" class="slds-m-bottom_small"></lightning-icon>
+                                    <p class="slds-text-heading_small">Select a Paper Node</p>
+                                    <p class="slds-text-color_weak slds-m-top_xx-small">Click any node circle in the graph to view citation metadata and open-access links.</p>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+
+                <template if:false={hasGraphData}>
+                    <div class="slds-p-around_large slds-text-align_center slds-box slds-theme_shade">
+                        <lightning-icon icon-name="utility:graph" size="large" class="slds-m-bottom_small"></lightning-icon>
+                        <p class="slds-text-heading_small">No Citation Network Available</p>
+                        <p class="slds-text-color_weak slds-m-top_xx-small">Link at least 2 papers to this Research Map to visualize citation relationships.</p>
+                    </div>
+                </template>
+            </template>
+        </div>
+    </lightning-card>
+</template>

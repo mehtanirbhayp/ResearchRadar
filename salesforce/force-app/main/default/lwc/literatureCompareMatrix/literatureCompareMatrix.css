@@ -1,0 +1,31 @@
+.table-container {
+    overflow-x: auto;
+}
+
+.paper-title-cell strong {
+    color: #0b1f3a;
+    font-size: 0.95rem;
+}
+
+.paper-title-cell strong:hover {
+    color: #0176d3;
+    text-decoration: underline;
+}
+
+.citation-pill {
+    display: inline-flex;
+    align-items: center;
+    background-color: #f0fdf4;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.custom-link-btn {
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    height: auto;
+    line-height: 1.5;
+}
