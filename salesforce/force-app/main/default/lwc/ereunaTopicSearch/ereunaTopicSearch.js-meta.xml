@@ -2,7 +2,7 @@
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>62.0</apiVersion>
     <isExposed>true</isExposed>
-    <masterLabel>Ereuna Topic Search &amp; Synthesis</masterLabel>
+    <masterLabel>Research Radar Topic Search &amp; Synthesis</masterLabel>
     <description>Interactive search and autonomous research map synthesizer.</description>
     <targets>
         <target>lightning__AppPage</target>

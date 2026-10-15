@@ -12,29 +12,49 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>Computer Science</fullName>
-                <default>false</default>
-                <label>Computer Science</label>
+                <fullName>Chemical Engineering</fullName>
+                <default>true</default>
+                <label>Chemical Engineering</label>
             </value>
             <value>
-                <fullName>Artificial Intelligence</fullName>
+                <fullName>Mechanical Engineering</fullName>
                 <default>false</default>
-                <label>Artificial Intelligence</label>
+                <label>Mechanical Engineering</label>
             </value>
             <value>
-                <fullName>Biomedicine</fullName>
+                <fullName>Civil Engineering</fullName>
                 <default>false</default>
-                <label>Biomedicine</label>
+                <label>Civil Engineering</label>
+            </value>
+            <value>
+                <fullName>Electrical &amp; Electronics (EEE)</fullName>
+                <default>false</default>
+                <label>Electrical &amp; Electronics (EEE)</label>
+            </value>
+            <value>
+                <fullName>Electronics &amp; Communication (ECE)</fullName>
+                <default>false</default>
+                <label>Electronics &amp; Communication (ECE)</label>
+            </value>
+            <value>
+                <fullName>Materials Science &amp; Engineering</fullName>
+                <default>false</default>
+                <label>Materials Science &amp; Engineering</label>
             </value>
             <value>
                 <fullName>Cloud Computing</fullName>
-                <default>true</default>
+                <default>false</default>
                 <label>Cloud Computing</label>
             </value>
             <value>
                 <fullName>Distributed Systems</fullName>
                 <default>false</default>
                 <label>Distributed Systems</label>
+            </value>
+            <value>
+                <fullName>Computer Science</fullName>
+                <default>false</default>
+                <label>Computer Science</label>
             </value>
         </valueSetDefinition>
     </valueSet>

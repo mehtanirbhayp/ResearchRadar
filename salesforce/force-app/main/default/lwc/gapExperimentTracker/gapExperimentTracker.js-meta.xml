@@ -2,7 +2,7 @@
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>62.0</apiVersion>
     <isExposed>true</isExposed>
-    <masterLabel>Ereuna Research Gap &amp; Experiment Tracker</masterLabel>
+    <masterLabel>Research Radar Gap &amp; Experiment Tracker</masterLabel>
     <description>Interactive cards for open research questions and proposed validation experiments.</description>
     <targets>
         <target>lightning__RecordPage</target>

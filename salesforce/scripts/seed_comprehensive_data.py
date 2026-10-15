@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Seed comprehensive, publication-grade academic research data into Salesforce for Ereuna Research Radar.
+Seed comprehensive, publication-grade academic research data into Salesforce for Research Radar.
 Generates realistic Papers, Research Maps, Map-Paper Links, Extracted Metrics, Verified Findings,
 Research Conflicts, and Research Gaps across Cloud Computing & Distributed Systems.
 """
@@ -12,7 +12,7 @@ import sys
 APEX_SCRIPT_PATH = os.path.join(os.path.dirname(__file__), 'apex', 'seed_full_workload.apex')
 
 APEX_CODE = '''
-// Execute Full Comprehensive Dataset Seeding for Ereuna Research Radar
+// Execute Full Comprehensive Dataset Seeding for Research Radar
 System.debug('Starting Comprehensive Research Data Seeding...');
 
 // ---------------------------------------------------------

@@ -1,33 +1,103 @@
 <template>
     <div class="dashboard-wrapper">
+        <!-- Top Operational & Governance Bar -->
+        <div class="top-nav-bar slds-m-bottom_medium">
+            <div class="top-bar-left">
+                <span class="platform-title">RESEARCH RADAR</span>
+                <span class="platform-tag">Literature Intelligence Platform</span>
+            </div>
+            <div class="top-bar-right">
+                <button class="top-bar-btn" onclick={handleOpenManual}>
+                    <lightning-icon icon-name="utility:notebook" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
+                    <span>User Manual</span>
+                </button>
+                <button class="top-bar-btn" onclick={handleOpenTerms}>
+                    <lightning-icon icon-name="utility:contract_alt" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
+                    <span>Terms &amp; Conditions</span>
+                </button>
+                <button class="top-bar-btn" onclick={handleOpenDisclaimer}>
+                    <lightning-icon icon-name="utility:shield" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
+                    <span>Legal &amp; Safety Disclaimer</span>
+                </button>
+                <button class="top-bar-btn" onclick={handleOpenSources}>
+                    <lightning-icon icon-name="utility:database" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
+                    <span>Data Sources</span>
+                </button>
+                <button class="top-bar-btn" onclick={handleOpenRegulations}>
+                    <lightning-icon icon-name="utility:rules" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
+                    <span>Regulations</span>
+                </button>
+                <a href="/resource/ResearchRadarGovernanceManual" target="_blank" class="top-bar-btn-download">
+                    <lightning-icon icon-name="utility:download" size="xx-small" variant="inverse" class="slds-m-right_xx-small"></lightning-icon>
+                    <span>Download PDF</span>
+                </a>
+            </div>
+        </div>
+
         <!-- Metric KPI Summary Header -->
         <div class="slds-grid slds-wrap slds-gutters slds-m-bottom_medium">
+            <!-- Card 1: Research Maps -->
             <div class="slds-col slds-size_1-of-1 slds-medium-size_3-of-12 slds-m-bottom_small">
-                <div class="kpi-card">
-                    <span class="kpi-label">RESEARCH MAPS</span>
-                    <h2 class="kpi-value">{totalMapsCount}</h2>
-                </div>
+                <article class="kpi-card">
+                    <div class="kpi-top-row">
+                        <span class="kpi-label">Research Maps</span>
+                        <span class="kpi-pill">Topologies</span>
+                    </div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value">{totalMapsCount}</span>
+                    </div>
+                    <div class="kpi-sub-row">
+                        <span>Synthesized literature clusters</span>
+                    </div>
+                </article>
             </div>
 
+            <!-- Card 2: Cataloged Papers -->
             <div class="slds-col slds-size_1-of-1 slds-medium-size_3-of-12 slds-m-bottom_small">
-                <div class="kpi-card">
-                    <span class="kpi-label">CATALOGED PAPERS</span>
-                    <h2 class="kpi-value">{totalPapersCount}</h2>
-                </div>
+                <article class="kpi-card">
+                    <div class="kpi-top-row">
+                        <span class="kpi-label">Cataloged Papers</span>
+                        <span class="kpi-pill">Peer-Reviewed</span>
+                    </div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value">{totalPapersCount}</span>
+                    </div>
+                    <div class="kpi-sub-row">
+                        <span>Indexed publications &amp; DOIs</span>
+                    </div>
+                </article>
             </div>
 
+            <!-- Card 3: Verified Findings -->
             <div class="slds-col slds-size_1-of-1 slds-medium-size_3-of-12 slds-m-bottom_small">
-                <div class="kpi-card">
-                    <span class="kpi-label">VERIFIED FINDINGS</span>
-                    <h2 class="kpi-value">{totalFindingsCount}</h2>
-                </div>
+                <article class="kpi-card">
+                    <div class="kpi-top-row">
+                        <span class="kpi-label">Verified Findings</span>
+                        <span class="kpi-pill">Evidence</span>
+                    </div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value">{totalFindingsCount}</span>
+                    </div>
+                    <div class="kpi-sub-row">
+                        <span>Verbatim claims with citations</span>
+                    </div>
+                </article>
             </div>
 
+            <!-- Card 4: Active Gaps -->
             <div class="slds-col slds-size_1-of-1 slds-medium-size_3-of-12 slds-m-bottom_small">
-                <div class="kpi-card">
-                    <span class="kpi-label">ACTIVE GAPS</span>
-                    <h2 class="kpi-value">{totalGapsCount}</h2>
-                </div>
+                <article class="kpi-card">
+                    <div class="kpi-top-row">
+                        <span class="kpi-label">Active Gaps</span>
+                        <span class="kpi-pill">Protocols</span>
+                    </div>
+                    <div class="kpi-value-row">
+                        <span class="kpi-value">{totalGapsCount}</span>
+                    </div>
+                    <div class="kpi-sub-row">
+                        <span>Experiments awaiting validation</span>
+                    </div>
+                </article>
             </div>
         </div>
 
@@ -37,18 +107,29 @@
         </div>
 
         <div class="slds-grid slds-wrap slds-gutters">
-            <!-- Left: Quick Topic Navigation -->
-            <div class="slds-col slds-size_1-of-1 slds-large-size_8-of-12 slds-m-bottom_medium">
+            <!-- Full Width: Quick Topic Navigation -->
+            <div class="slds-col slds-size_1-of-1 slds-m-bottom_medium">
                 <lightning-card title="Synthesized Research Topics" icon-name="standard:topic">
                     <div class="slds-p-around_medium">
+                        <!-- Discipline Quick Filter Strip -->
+                        <div class="filter-strip slds-m-bottom_medium">
+                            <span class="filter-strip-label">Branch:</span>
+                            <button class={filterAllClass} onclick={handleFilterChange} data-disc="All">All Disciplines</button>
+                            <button class={filterChemClass} onclick={handleFilterChange} data-disc="Chemical Engineering">Chemical</button>
+                            <button class={filterMechClass} onclick={handleFilterChange} data-disc="Mechanical Engineering">Mechanical</button>
+                            <button class={filterCivilClass} onclick={handleFilterChange} data-disc="Civil Engineering">Civil</button>
+                            <button class={filterEeeClass} onclick={handleFilterChange} data-disc="Electrical &amp; Electronics (EEE)">EEE</button>
+                            <button class={filterEceClass} onclick={handleFilterChange} data-disc="Electronics &amp; Communication (ECE)">ECE</button>
+                        </div>
+
                         <template if:true={hasRecentMaps}>
                             <table class="slds-table slds-table_cell-buffer slds-table_bordered">
                                 <thead>
                                     <tr class="slds-line-height_reset">
-                                        <th scope="col" style="width: 45%;"><div class="slds-truncate" title="Topic">Topic</div></th>
-                                        <th scope="col" style="width: 25%;"><div class="slds-truncate" title="Discipline">Discipline</div></th>
-                                        <th scope="col" style="width: 15%;"><div class="slds-truncate" title="Status">Status</div></th>
-                                        <th scope="col" style="width: 15%;"><div class="slds-truncate" title="Action">Action</div></th>
+                                        <th scope="col" style="width: 38%;"><div class="slds-truncate" title="Topic">Topic</div></th>
+                                        <th scope="col" style="width: 24%;"><div class="slds-truncate" title="Discipline">Discipline</div></th>
+                                        <th scope="col" style="width: 14%;"><div class="slds-truncate" title="Status">Status</div></th>
+                                        <th scope="col" style="width: 24%; text-align: right;"><div class="slds-truncate" title="Action">Action</div></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -63,9 +144,9 @@
                                                 <span>{map.Target_Discipline__c}</span>
                                             </td>
                                             <td>
-                                                <span class="tag-pill-subtle">{map.Status__c}</span>
+                                                <span class={map.statusClass}>{map.Status__c}</span>
                                             </td>
-                                            <td>
+                                            <td style="text-align: right;">
                                                 <button class="action-btn" onclick={handleNavigateToMap} data-id={map.Id}>
                                                     Open Workspace &rarr;
                                                 </button>
@@ -84,32 +165,157 @@
                     </div>
                 </lightning-card>
             </div>
-
-            <!-- Right: Quick Actions -->
-            <div class="slds-col slds-size_1-of-1 slds-large-size_4-of-12 slds-m-bottom_medium">
-                <lightning-card title="System Operations" icon-name="standard:settings">
-                    <div class="slds-p-around_medium">
-                        <div class="quick-action-list">
-                            <button class="quick-action-item" onclick={handleNavigateToPapers}>
-                                <strong>Research Papers Catalog</strong>
-                                <span>Browse indexed papers &amp; benchmarks</span>
-                            </button>
-                            <button class="quick-action-item" onclick={handleNavigateToGaps}>
-                                <strong>Research Gap Board</strong>
-                                <span>Track validation experiments &amp; protocols</span>
-                            </button>
-                            <button class="quick-action-item" onclick={handleNavigateToMaps}>
-                                <strong>Research Maps Hub</strong>
-                                <span>View all topic syntheses &amp; clusters</span>
-                            </button>
-                            <button class="quick-action-item" onclick={handleNavigateToFindings}>
-                                <strong>Verified Findings &amp; Evidence</strong>
-                                <span>Inspect quotes and confidence scores</span>
-                            </button>
-                        </div>
-                    </div>
-                </lightning-card>
-            </div>
         </div>
+
+        <!-- Governance & User Manual Interactive Modal -->
+        <template if:true={isGovernanceModalOpen}>
+            <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_medium" aria-modal="true">
+                <div class="slds-modal__container gov-modal-container">
+                    <header class="slds-modal__header gov-modal-header">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handleCloseGovernanceModal}>
+                            <lightning-icon icon-name="utility:close" alternative-text="close" size="small"></lightning-icon>
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                        <div class="gov-modal-title-row">
+                            <h2 class="gov-modal-h2">RESEARCH RADAR GOVERNANCE &amp; DOCUMENTATION</h2>
+                            <span class="gov-modal-badge">Doc Ref: RR-MANUAL-2026-V1</span>
+                        </div>
+                        <!-- Modal Sub-nav switcher -->
+                        <div class="gov-nav-tabs slds-m-top_small">
+                            <button class={navManualClass} onclick={handleSwitchModalTab} data-tab="manual">User Manual</button>
+                            <button class={navTermsClass} onclick={handleSwitchModalTab} data-tab="terms">Terms &amp; Conditions</button>
+                            <button class={navDisclaimerClass} onclick={handleSwitchModalTab} data-tab="disclaimer">Legal &amp; Safety Disclaimer</button>
+                            <button class={navSourcesClass} onclick={handleSwitchModalTab} data-tab="sources">Data Sources</button>
+                            <button class={navRegulationsClass} onclick={handleSwitchModalTab} data-tab="regulations">Regulatory Framework</button>
+                        </div>
+                    </header>
+
+                    <div class="slds-modal__content slds-p-around_large gov-modal-body">
+                        <!-- SECTION 1: USER MANUAL -->
+                        <template if:true={isTabManual}>
+                            <div class="doc-section">
+                                <h3 class="doc-h3">1. User Operational Manual</h3>
+                                <p class="doc-p">Research Radar accelerates academic literature reviews from several weeks to sub-second deterministic queries across engineering and scientific disciplines (Computer Science, Electrical, Mechanical, Civil, Chemical, and Materials Science). It organizes complex research corpora into actionable, structured entities linked via relational ACID schemas.</p>
+                                
+                                <h4 class="doc-h4">1.1 Core Workspaces</h4>
+                                <ul class="doc-ul">
+                                    <li><strong>Research Radar Dashboard:</strong> Real-time executive KPIs, branch filters (All, Chemical, Mechanical, Civil, EEE, ECE), and autonomous Literature Synthesis Engine.</li>
+                                    <li><strong>Research Maps Hub:</strong> Topological repository displaying synthesized literature clusters and launching deep multi-paper workspaces.</li>
+                                    <li><strong>Research Papers Catalog:</strong> Peer-reviewed publications indexed by DOI, publication year, impact factor, citations, and BibTeX.</li>
+                                    <li><strong>Research Gap Board:</strong> Interactive Kanban board tracking open empirical questions and validation experiment milestones across stages.</li>
+                                    <li><strong>Verified Findings Explorer:</strong> Empirical claim catalog with verbatim quote extractions and statistical confidence scores.</li>
+                                </ul>
+
+                                <h4 class="doc-h4">1.2 Autonomous Literature Synthesis Workflow</h4>
+                                <p class="doc-p">To synthesize a new research cluster or explore uncharted engineering domains:</p>
+                                <ol class="doc-ol">
+                                    <li>Input your research phrase (e.g., <em>"Serverless cold-start latency mitigation"</em>, <em>"GaN microgrid power conversion"</em>, or <em>"Conjugate heat transfer in microchannels"</em>) into the synthesis bar.</li>
+                                    <li>Select target engineering discipline focus (All, Chemical, Mechanical, Civil, EEE, ECE, or Computer Science).</li>
+                                    <li>Click <strong>Generate Research Map</strong>. Apex controllers query indexed databases, instantiate a new Research_Map__c record, correlate matching peer-reviewed papers via junction objects, extract quantitative metrics, and flag active contradictions.</li>
+                                    <li>Click <strong>Open Workspace &rarr;</strong> in the synthesized topics table to inspect the deep comparison matrix and empirical evidence.</li>
+                                </ol>
+
+                                <h4 class="doc-h4">1.3 Metric Comparison Matrix</h4>
+                                <p class="doc-p">The matrix aligns benchmark values side-by-side across key physical and engineering parameters: Latency (ms) &amp; Throughput, Energy Efficiency &amp; Power Density (W/cm²), Thermal Conductivity &amp; Heat Transfer Coefficients (W/m²·K), Space-Time Yield, and Structural Compressive Strength (MPa).</p>
+                            </div>
+                        </template>
+
+                        <!-- SECTION 2: TERMS AND CONDITIONS -->
+                        <template if:true={isTabTerms}>
+                            <div class="doc-section">
+                                <h3 class="doc-h3">2. Terms and Conditions of Service</h3>
+                                <p class="doc-p">By accessing Research Radar, users agree to international academic integrity standards and institutional research guidelines.</p>
+
+                                <h4 class="doc-h4">2.1 Intellectual Property &amp; Ownership</h4>
+                                <ul class="doc-ul">
+                                    <li><strong>User-Generated Syntheses:</strong> Researchers retain 100% intellectual property ownership over synthesized Research Maps, derived hypotheses, and experimental gap protocols created within their tenancy.</li>
+                                    <li><strong>Primary Source Copyrights:</strong> Indexed publications, verbatim quotes, and DOI metadata remain copyrighted by their respective authors and publishing societies (IEEE, ACM, Elsevier, ACS, Wiley, Springer Nature, etc.).</li>
+                                    <li><strong>Fair Use Compliance:</strong> Platform excerpting strictly complies with 17 U.S. Code § 107 (Fair Use) and Directive (EU) 2019/790 for Text and Data Mining (TDM) in scientific research.</li>
+                                </ul>
+
+                                <h4 class="doc-h4">2.2 Academic Integrity &amp; Acceptable Use</h4>
+                                <p class="doc-p">Research Radar is provided exclusively for verified academic, educational, and scientific research. Users shall not utilize the platform to generate deceptive, falsified, or plagiarized research output.</p>
+                            </div>
+                        </template>
+
+                        <!-- SECTION 3: LEGAL & SAFETY DISCLAIMER -->
+                        <template if:true={isTabDisclaimer}>
+                            <div class="doc-section">
+                                <div class="hazard-callout slds-m-bottom_medium">
+                                    <div class="hazard-title">ACADEMIC RESEARCH &amp; ENGINEERING IMPLEMENTATION NOTICE</div>
+                                    <p class="hazard-body">
+                                        Research Radar is an automated computational intelligence platform developed strictly for academic literature synthesis, conceptual exploratory research, and citation analysis. 
+                                        <strong>Algorithmic outputs, extracted metrics, and synthesized research maps are assistive resources and DO NOT constitute certified peer review, professional engineering design certification, or actionable laboratory protocols.</strong>
+                                    </p>
+                                </div>
+
+                                <h4 class="doc-h4">3.1 Independent Professional &amp; Experimental Verification</h4>
+                                <p class="doc-p">Researchers, engineers, and practitioners must independently verify all extracted data, quantitative metrics, mathematical formulas, and methodological procedures against primary publisher DOI sources before applying them in physical engineering implementations, structural designs, electronic circuits, software systems, or laboratory experiments.</p>
+
+                                <h4 class="doc-h4">3.2 Operational &amp; Laboratory Safety Advisory</h4>
+                                <p class="doc-p">Experimental and physical engineering research (including chemical processes, electrical prototyping, thermal management, and structural fabrication) involves inherent physical hazards. All experimental testing must be conducted under qualified institutional supervision with appropriate Environmental Health &amp; Safety (EHS), OSHA, and IEEE electrical safety protocols.</p>
+
+                                <h4 class="doc-h4">3.3 Limitation of Liability</h4>
+                                <p class="doc-p">THE PLATFORM IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED. UNDER NO CIRCUMSTANCES SHALL RESEARCH RADAR, ITS DEVELOPERS, OR AFFILIATED INSTITUTIONS BE HELD LIABLE FOR DIRECT, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING FROM RELIANCE ON SYNTHESIZED LITERATURE, DESIGN CHOICES, OR PHYSICAL EXPERIMENTAL FAILURES.</p>
+                            </div>
+                        </template>
+
+                        <!-- SECTION 4: DATA SOURCES & PROVENANCE -->
+                        <template if:true={isTabSources}>
+                            <div class="doc-section">
+                                <h3 class="doc-h3">4. Data Sources &amp; Citation Provenance</h3>
+                                <p class="doc-p">Research Radar enforces strict citation provenance. Every cataloged paper, metric, and finding originates from authoritative, peer-reviewed academic indexing repositories:</p>
+
+                                <div class="sources-grid slds-m-top_small">
+                                    <div class="source-box">
+                                        <div class="source-name">CrossRef REST API</div>
+                                        <div class="source-desc">Official DOI registration, permanent URI resolution, funding agency registries, and metadata harvesting across all engineering domains.</div>
+                                    </div>
+                                    <div class="source-box">
+                                        <div class="source-name">OpenAlex Academic Graph</div>
+                                        <div class="source-desc">Over 250M cataloged publications across Computer Science, Electrical, Mechanical, Civil, Chemical, and Applied Sciences.</div>
+                                    </div>
+                                    <div class="source-box">
+                                        <div class="source-name">Semantic Scholar (S2)</div>
+                                        <div class="source-desc">Citation velocity metrics, highly influential citations, and algorithmic TLDR literature condensations.</div>
+                                    </div>
+                                    <div class="source-box">
+                                        <div class="source-name">arXiv &amp; TechRxiv</div>
+                                        <div class="source-desc">Preprint indexing covering computer systems, AI, microelectronics, quantum computing, and materials science.</div>
+                                    </div>
+                                    <div class="source-box">
+                                        <div class="source-name">Publisher TDM Feeds (IEEE, ACM, Elsevier, Wiley)</div>
+                                        <div class="source-desc">Authorized structured XML feeds for indexed peer-reviewed journal articles, conference proceedings, and technical reports.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+
+                        <!-- SECTION 5: REGULATORY COMPLIANCE -->
+                        <template if:true={isTabRegulations}>
+                            <div class="doc-section">
+                                <h3 class="doc-h3">5. Regulatory Compliance &amp; Governance Standards</h3>
+                                <p class="doc-p">Research Radar conforms to international scientific data privacy, ethical AI governance, and academic integrity regulations:</p>
+
+                                <ul class="doc-ul slds-m-top_small">
+                                    <li><strong>GDPR (EU 2016/679) &amp; CCPA:</strong> Zero-retention privacy architecture. Private user queries and draft hypotheses are never sold, commercialized, or shared with third-party foundation model trainers.</li>
+                                    <li><strong>EU Artificial Intelligence Act:</strong> Compliance with Article 52 algorithmic transparency mandates. Every AI synthesis clearly provides human-verifiable citations linking to registered DOIs.</li>
+                                    <li><strong>FAIR Data Principles:</strong> Full support for Findable, Accessible, Interoperable, and Reusable scientific data via structured JSON-LD and BibTeX schema.</li>
+                                    <li><strong>IEEE &amp; ACM Code of Ethics:</strong> Rigorous adherence to intellectual honesty, avoidance of scientific misinformation, and algorithmic accountability.</li>
+                                </ul>
+                            </div>
+                        </template>
+                    </div>
+
+                    <footer class="slds-modal__footer gov-modal-footer">
+                        <a href="/resource/ResearchRadarGovernanceManual" target="_blank" class="action-btn-black slds-m-right_small">
+                            Download Official PDF
+                        </a>
+                        <button class="action-btn" onclick={handleCloseGovernanceModal}>Close</button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
     </div>
 </template>

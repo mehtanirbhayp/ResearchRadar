@@ -2,7 +2,7 @@
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>62.0</apiVersion>
     <isExposed>true</isExposed>
-    <masterLabel>Ereuna Paper Explorer</masterLabel>
+    <masterLabel>Research Radar Paper Explorer</masterLabel>
     <description>Interactive visual catalog for exploring academic research papers, extracted metrics, and BibTeX citations.</description>
     <targets>
         <target>lightning__AppPage</target>

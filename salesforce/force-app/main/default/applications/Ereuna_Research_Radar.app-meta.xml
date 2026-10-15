@@ -4,20 +4,21 @@
         <headerColor>#000000</headerColor>
         <shouldOverrideOrgTheme>false</shouldOverrideOrgTheme>
     </brand>
-    <description>Ereuna: Autonomous Cloud Computing &amp; Academic Literature Intelligence Platform. Synthesize research maps, compare benchmarks, and detect conflicts and research gaps.</description>
+    <description>Research Radar: Autonomous Academic &amp; Engineering Literature Intelligence Platform. Synthesize research maps, compare benchmarks, and detect conflicts and research gaps.</description>
     <formFactors>Small</formFactors>
     <formFactors>Large</formFactors>
     <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
     <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
     <isOmniPinnedViewEnabled>false</isOmniPinnedViewEnabled>
-    <label>Ereuna Research Radar</label>
+    <label>Research Radar</label>
     <navType>Standard</navType>
     <tabs>Ereuna_Home</tabs>
     <tabs>Research_Map_Hub</tabs>
     <tabs>Paper_Explorer</tabs>
     <tabs>Gap_Board</tabs>
     <tabs>Findings_Explorer</tabs>
+    <tabs>User_Manual</tabs>
     <tabs>standard-report</tabs>
     <tabs>standard-Dashboard</tabs>
     <uiType>Lightning</uiType>

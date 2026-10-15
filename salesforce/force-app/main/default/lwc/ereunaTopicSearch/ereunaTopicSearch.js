@@ -5,7 +5,7 @@ import { NavigationMixin } from 'lightning/navigation';
 
 export default class EreunaTopicSearch extends NavigationMixin(LightningElement) {
     @track topicQuery = '';
-    @track selectedDiscipline = 'Cloud Computing';
+    @track selectedDiscipline = 'All';
     @track isLoading = false;
     @track pipelineStep = '1';
     @track statusMessage = '';
@@ -14,11 +14,14 @@ export default class EreunaTopicSearch extends NavigationMixin(LightningElement)
 
     get disciplineOptions() {
         return [
-            { label: 'Cloud Computing', value: 'Cloud Computing' },
-            { label: 'Artificial Intelligence', value: 'Artificial Intelligence' },
-            { label: 'Distributed Systems', value: 'Distributed Systems' },
-            { label: 'Computer Science', value: 'Computer Science' },
-            { label: 'Biomedicine', value: 'Biomedicine' }
+            { label: 'All Disciplines', value: 'All' },
+            { label: 'Computer Science & Cloud AI', value: 'Cloud Computing' },
+            { label: 'Chemical Engineering', value: 'Chemical Engineering' },
+            { label: 'Mechanical Engineering', value: 'Mechanical Engineering' },
+            { label: 'Civil Engineering', value: 'Civil Engineering' },
+            { label: 'Electrical & Electronics (EEE)', value: 'Electrical & Electronics (EEE)' },
+            { label: 'Electronics & Communication (ECE)', value: 'Electronics & Communication (ECE)' },
+            { label: 'Materials Science & Engineering', value: 'Materials Science & Engineering' }
         ];
     }
 

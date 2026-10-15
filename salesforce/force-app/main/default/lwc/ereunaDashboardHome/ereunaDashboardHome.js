@@ -26,17 +26,23 @@ export default class EreunaDashboardHome extends NavigationMixin(LightningElemen
         return this.rawMaps && this.rawMaps.length > 0;
     }
 
-    get mapsList() {
-        return this.rawMaps.map(m => {
-            let statusClass = 'slds-badge slds-badge_lightest';
-            if (m.Status__c === 'Synthesized') statusClass = 'slds-badge slds-theme_success';
-            else if (m.Status__c === 'In Progress') statusClass = 'slds-badge slds-theme_warning';
+    get hasRecentMaps() {
+        return this.rawMaps && this.rawMaps.length > 0;
+    }
 
+    get recentMaps() {
+        return this.rawMaps.map(m => {
+            let statusClass = 'tag-pill-subtle';
+            if (m.Status__c === 'Synthesized') statusClass = 'tag-pill';
             return {
                 ...m,
                 statusClass
             };
         });
+    }
+
+    get mapsList() {
+        return this.recentMaps;
     }
 
     get totalMapsCount() {
@@ -55,16 +61,28 @@ export default class EreunaDashboardHome extends NavigationMixin(LightningElemen
         return this.rawMaps.reduce((acc, m) => acc + (m.Total_Gaps__c || 0), 0);
     }
 
-    get filterAllVariant() {
-        return this.selectedDiscipline === 'All' ? 'brand' : 'neutral';
+    get filterAllClass() {
+        return this.selectedDiscipline === 'All' ? 'filter-pill active' : 'filter-pill';
     }
 
-    get filterCloudVariant() {
-        return this.selectedDiscipline === 'Cloud Computing' ? 'brand' : 'neutral';
+    get filterChemClass() {
+        return this.selectedDiscipline === 'Chemical Engineering' ? 'filter-pill active' : 'filter-pill';
     }
 
-    get filterDistVariant() {
-        return this.selectedDiscipline === 'Distributed Systems' ? 'brand' : 'neutral';
+    get filterMechClass() {
+        return this.selectedDiscipline === 'Mechanical Engineering' ? 'filter-pill active' : 'filter-pill';
+    }
+
+    get filterCivilClass() {
+        return this.selectedDiscipline === 'Civil Engineering' ? 'filter-pill active' : 'filter-pill';
+    }
+
+    get filterEeeClass() {
+        return this.selectedDiscipline === 'Electrical & Electronics (EEE)' ? 'filter-pill active' : 'filter-pill';
+    }
+
+    get filterEceClass() {
+        return this.selectedDiscipline === 'Electronics & Communication (ECE)' ? 'filter-pill active' : 'filter-pill';
     }
 
     handleFilterChange(event) {
@@ -78,6 +96,10 @@ export default class EreunaDashboardHome extends NavigationMixin(LightningElemen
         this.isLoading = false;
     }
 
+    handleMapSynthesized() {
+        this.handleDataRefreshed();
+    }
+
     handleNavigateToMap(event) {
         const mapId = event.currentTarget.dataset.id;
         if (!mapId) return;
@@ -89,6 +111,110 @@ export default class EreunaDashboardHome extends NavigationMixin(LightningElemen
                 objectApiName: 'Research_Map__c',
                 actionName: 'view'
             }
+        });
+    }
+
+    @track isGovernanceModalOpen = false;
+    @track activeGovernanceTab = 'manual';
+
+    get isTabManual() {
+        return this.activeGovernanceTab === 'manual';
+    }
+
+    get isTabTerms() {
+        return this.activeGovernanceTab === 'terms';
+    }
+
+    get isTabDisclaimer() {
+        return this.activeGovernanceTab === 'disclaimer';
+    }
+
+    get isTabSources() {
+        return this.activeGovernanceTab === 'sources';
+    }
+
+    get isTabRegulations() {
+        return this.activeGovernanceTab === 'regulations';
+    }
+
+    get navManualClass() {
+        return this.activeGovernanceTab === 'manual' ? 'gov-nav-tab active' : 'gov-nav-tab';
+    }
+
+    get navTermsClass() {
+        return this.activeGovernanceTab === 'terms' ? 'gov-nav-tab active' : 'gov-nav-tab';
+    }
+
+    get navDisclaimerClass() {
+        return this.activeGovernanceTab === 'disclaimer' ? 'gov-nav-tab active' : 'gov-nav-tab';
+    }
+
+    get navSourcesClass() {
+        return this.activeGovernanceTab === 'sources' ? 'gov-nav-tab active' : 'gov-nav-tab';
+    }
+
+    get navRegulationsClass() {
+        return this.activeGovernanceTab === 'regulations' ? 'gov-nav-tab active' : 'gov-nav-tab';
+    }
+
+    handleOpenManual() {
+        this.activeGovernanceTab = 'manual';
+        this.isGovernanceModalOpen = true;
+    }
+
+    handleOpenTerms() {
+        this.activeGovernanceTab = 'terms';
+        this.isGovernanceModalOpen = true;
+    }
+
+    handleOpenDisclaimer() {
+        this.activeGovernanceTab = 'disclaimer';
+        this.isGovernanceModalOpen = true;
+    }
+
+    handleOpenSources() {
+        this.activeGovernanceTab = 'sources';
+        this.isGovernanceModalOpen = true;
+    }
+
+    handleOpenRegulations() {
+        this.activeGovernanceTab = 'regulations';
+        this.isGovernanceModalOpen = true;
+    }
+
+    handleSwitchModalTab(event) {
+        this.activeGovernanceTab = event.currentTarget.dataset.tab;
+    }
+
+    handleCloseGovernanceModal() {
+        this.isGovernanceModalOpen = false;
+    }
+
+    handleNavigateToPapers() {
+        this[NavigationMixin.Navigate]({
+            type: 'standard__navItemPage',
+            attributes: { apiName: 'Paper_Explorer' }
+        });
+    }
+
+    handleNavigateToGaps() {
+        this[NavigationMixin.Navigate]({
+            type: 'standard__navItemPage',
+            attributes: { apiName: 'Gap_Board' }
+        });
+    }
+
+    handleNavigateToMaps() {
+        this[NavigationMixin.Navigate]({
+            type: 'standard__navItemPage',
+            attributes: { apiName: 'Research_Map_Hub' }
+        });
+    }
+
+    handleNavigateToFindings() {
+        this[NavigationMixin.Navigate]({
+            type: 'standard__navItemPage',
+            attributes: { apiName: 'Findings_Explorer' }
         });
     }
 }

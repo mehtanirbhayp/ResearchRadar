@@ -1,16 +1,16 @@
-# Ereuna Research Radar: Project State & AI Memory Storage
+# Research Radar: Project State & AI Memory Storage
 
 > **Notice for Future AI Models & Collaborators**:  
-> This file is the primary context snapshot and memory storage for the **Ereuna Research Radar** project. If you are a new AI model or engineer taking over this repository, reading this document provides 100% full context of the project architecture, deployed Salesforce components, database records, CLI credentials, and operational workflows.
+> This file is the primary context snapshot and memory storage for the **Research Radar** project. If you are a new AI model or engineer taking over this repository, reading this document provides 100% full context of the project architecture, deployed Salesforce components, database records, CLI credentials, and operational workflows.
 
 ---
 
 ## 1. Project Overview & Context
 
-- **Project Name**: Ereuna Research Radar
-- **Original Context**: Academic literature intelligence and research synthesis engine for Cloud Computing & Distributed Systems.
-- **Course**: BMEE355E Cloud Computing
-- **Original Tech Stack**: Started as a custom web app (Next.js/Node), then fully migrated and implemented natively on **Salesforce Lightning Platform (PaaS / SaaS)** per course curriculum instructions.
+- **Project Name**: Research Radar
+- **Primary Domain**: Chemical Engineering (Heterogeneous Catalysis, Continuous-Flow Microreactors, Carbon Capture Membranes, Green Hydrogen PEM Electrolysis, Kinetic Modeling)
+- **Supported Engineering Branches**: Mechanical Engineering (Thermal Systems & CFD), Civil Engineering (Geopolymers & Bio-Concrete), Electrical & Electronics (GaN Power Systems), Electronics & Communication (Sub-THz 6G Networks)
+- **Platform Architecture**: Implemented natively on **Salesforce Lightning Platform (PaaS / SaaS)**
 - **Repository Root**: `/Users/nirbhaymehta/Desktop/Ereuna`
 - **Salesforce Project Directory**: `/Users/nirbhaymehta/Desktop/Ereuna/salesforce`
 
@@ -33,17 +33,17 @@
 
 ## 3. Current Live Database State (In Org)
 
-The Salesforce database is populated with realistic academic research data:
+The Salesforce database is populated with realistic academic research data centered on Chemical Engineering and multi-branch engineering:
 
-| Object API Name | Label | Total Seeded Records | Role in System |
-| :--- | :--- | :---: | :--- |
-| `Research_Map__c` | Research Map | **8** | High-level synthesis topics with roll-up counters & summaries |
-| `Research_Paper__c` | Research Paper | **18** | Peer-reviewed academic papers with DOIs, citations, venues |
-| `Map_Paper_Link__c` | Map Paper Link | **19** | Junction object connecting papers to maps with relevance scores |
-| `Research_Finding__c` | Research Finding | **11** | Empirical claims verified with verbatim quotes and page numbers |
-| `Extracted_Metric__c` | Extracted Metric | **15** | Quantitative benchmarks (latency, throughput, CO2, memory) |
-| `Research_Conflict__c` | Research Conflict | **3** | Scientific debates between Paper A and Paper B with severity |
-| `Research_Gap__c` | Research Gap | **7** | Open research questions with proposed validation experiments |
+| Object API Name | Label | Role in System |
+| :--- | :--- | :--- |
+| `Research_Map__c` | Research Map | High-level synthesis topics with roll-up counters & summaries (CO2 hydrogenation, MOF membranes, PEM electrolysis, microchannels, geopolymer concrete) |
+| `Research_Paper__c` | Research Paper | Peer-reviewed academic papers with DOIs, citations, venues (Journal of Catalysis, AIChE Journal, Chem. Eng. Science, Int. J. Hydrogen Energy) |
+| `Map_Paper_Link__c` | Map Paper Link | Junction object connecting papers to maps with relevance scores and inclusion rationales |
+| `Research_Finding__c` | Research Finding | Empirical claims verified with verbatim quotes, page numbers, and spectroscopy observations |
+| `Extracted_Metric__c` | Extracted Metric | Quantitative benchmarks (Space-Time Yield, Selectivity %, Heat Transfer Coeff, Overpotential, Compressive Strength) |
+| `Research_Conflict__c` | Research Conflict | Scientific debates between Paper A and Paper B with severity (Reaction Mechanisms: Formate vs Hydroxycarbonyl) |
+| `Research_Gap__c` | Research Gap | Open research questions with proposed validation experiments and status tracking |
 
 To re-seed or verify at any time:
 ```bash
@@ -195,6 +195,7 @@ Located in `salesforce/force-app/main/default/classes/`:
 - **`docs/APP_FUNCTIONAL_GUIDE.md`**: Complete user manual and functional reference for every single tab, button, component, and method.
 - **`docs/PROJECT_WRITEUP.md`**: Comprehensive academic project report aligned with Cloud Computing (BMEE355E) curriculum.
 - **`docs/SALESFORCE_GUIDE.md`**: Step-by-step setup and grading demonstration guide.
+- **`docs/EREUNA_PITCH_DOCUMENT.pdf`**: Complete 10-15 minute pitch script, architecture defense, demo flow, moat, and competitive comparison.
 - **`PROJECT_MEMORY.md`**: (This file) Core AI state and knowledge snapshot.
 
 ---
@@ -221,4 +222,16 @@ sf apex run test --test-level RunLocalTests --code-coverage
 
 ---
 
+## 10. Recent Architectural & UI Enhancements
+
+- **Synthesized Research Topics Table**: Fixed missing data render bug by implementing reactive getters `hasRecentMaps` and `recentMaps` in [ereunaDashboardHome.js](file:///Users/nirbhaymehta/Desktop/Ereuna/salesforce/force-app/main/default/lwc/ereunaDashboardHome/ereunaDashboardHome.js). Synthesized topic records now populate immediately.
+- **Refined Monochrome KPI Summary Cards**: Redesigned the 4 dashboard metric cards with top accent borders (`border-top: 3px solid #000000`), uppercase tracked category pills, and tabular numerals (`font-variant-numeric: tabular-nums; font-size: 2.4rem; font-weight: 800`), maintaining the exact 4-card rectangular shape in strict B&W.
+- **Removed Citation Network & Influence Graph**: Completely removed the Citation Network & Influence Graph from the Research Map workspace. The workspace now focuses directly on the primary structured tools:
+  - **Literature Comparison Matrix**: Comprehensive side-by-side benchmark matrix (default active tab).
+  - **Gap & Experiment Tracker**: Actionable open problems and validation protocols.
+  - **Verified Findings & Evidence**: Verbatim claims with page citations and confidence scores.
+
+---
+
 *Generated and verified for the Ereuna Cloud Computing Architecture Platform.*
+

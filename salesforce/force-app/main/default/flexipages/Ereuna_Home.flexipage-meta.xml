@@ -10,7 +10,7 @@
         <name>main</name>
         <type>Region</type>
     </flexiPageRegions>
-    <masterLabel>Ereuna Research Radar Dashboard</masterLabel>
+    <masterLabel>Research Radar Dashboard</masterLabel>
     <template>
         <name>flexipage:defaultAppHomeTemplate</name>
     </template>

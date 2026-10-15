@@ -1,8 +1,8 @@
-# EREUNA
+# RESEARCH RADAR
 
 **Research, on your radar.**
 
-Ereuna turns a research topic into a map of what the field knows. Type a topic, or upload your own papers, and Ereuna finds the relevant research, reads it, and shows you the findings, the disagreements and the open questions, with the source behind every claim.
+Research Radar turns a research topic into a map of what the field knows. Type a topic, or upload your own papers, and Research Radar finds the relevant research, reads it, and shows you the findings, the disagreements and the open questions, with the source behind every claim.
 
 It is available as an **Android app** and a **website**, both using one account.
 

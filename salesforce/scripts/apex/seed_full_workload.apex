@@ -1,5 +1,5 @@
 
-// Execute Full Comprehensive Dataset Seeding for Ereuna Research Radar
+// Execute Full Comprehensive Dataset Seeding for Research Radar
 System.debug('Starting Comprehensive Research Data Seeding...');
 
 // ---------------------------------------------------------

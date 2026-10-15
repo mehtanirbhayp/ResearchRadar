@@ -5,98 +5,123 @@ export default class CitationNetworkGraph extends LightningElement {
     @api recordId;
     @track isLoading = true;
     @track rawNodes = [];
-    @track rawLinks = [];
-    @track selectedNode = null;
+    @track selectedPaperId = null;
+    @track sortOrder = 'chronological'; // 'chronological' or 'citations'
 
     @wire(getCitationNetwork, { mapId: '$recordId' })
     wiredGraph({ data, error }) {
         this.isLoading = false;
-        if (data) {
+        if (data && data.nodes) {
             this.rawNodes = data.nodes || [];
-            this.rawLinks = data.links || [];
             if (this.rawNodes.length > 0) {
-                this.selectedNode = this.rawNodes[0];
+                // Select foundational paper by default
+                const sortedByCites = [...this.rawNodes].sort((a, b) => (b.citations || 0) - (a.citations || 0));
+                this.selectedPaperId = sortedByCites[0].id;
             }
         } else if (error) {
             this.rawNodes = [];
-            this.rawLinks = [];
         }
     }
 
-    get hasGraphData() {
+    get hasData() {
         return this.rawNodes && this.rawNodes.length > 0;
     }
 
-    get renderNodes() {
-        const count = this.rawNodes.length;
-        if (count === 0) return [];
+    get foundationalPaper() {
+        if (!this.rawNodes || this.rawNodes.length === 0) return null;
+        return [...this.rawNodes].sort((a, b) => (b.citations || 0) - (a.citations || 0))[0];
+    }
 
-        const centerX = 350;
-        const centerY = 225;
-        const radiusLayout = Math.min(centerX - 90, centerY - 50);
+    get totalCitations() {
+        if (!this.rawNodes) return 0;
+        return this.rawNodes.reduce((sum, p) => sum + (p.citations || 0), 0);
+    }
 
-        return this.rawNodes.map((node, i) => {
-            const angle = (2 * Math.PI * i) / count - Math.PI / 2;
-            const x = centerX + radiusLayout * Math.cos(angle);
-            const y = centerY + radiusLayout * Math.sin(angle);
+    get yearSpan() {
+        if (!this.rawNodes || this.rawNodes.length === 0) return '—';
+        const years = this.rawNodes.map(p => p.year || 2024).filter(y => y);
+        if (years.length === 0) return '2024';
+        const min = Math.min(...years);
+        const max = Math.max(...years);
+        return min === max ? `${min}` : `${min} – ${max}`;
+    }
 
-            // Radius scaled by citation count
-            const r = Math.min(38, Math.max(22, 22 + (node.citations || 0) / 10));
+    get papersList() {
+        if (!this.rawNodes || this.rawNodes.length === 0) return [];
+        const foundation = this.foundationalPaper;
 
-            const isSelected = this.selectedNode && this.selectedNode.id === node.id;
-            const circleClass = isSelected ? 'node-circle selected' : 'node-circle';
+        let sorted = [...this.rawNodes];
+        if (this.sortOrder === 'chronological') {
+            sorted.sort((a, b) => {
+                const yearDiff = (a.year || 2020) - (b.year || 2020);
+                if (yearDiff !== 0) return yearDiff;
+                return (b.citations || 0) - (a.citations || 0);
+            });
+        } else {
+            sorted.sort((a, b) => (b.citations || 0) - (a.citations || 0));
+        }
 
-            // Shortened label for SVG
-            const shortLabel = (node.label && node.label.length > 18) 
-                ? node.label.substring(0, 16) + '...' 
-                : (node.label || 'Paper');
+        return sorted.map((p, index) => {
+            const isBaseline = foundation && foundation.id === p.id;
+            const isSelected = this.selectedPaperId === p.id;
+            const stepNumber = String(index + 1).padStart(2, '0');
+
+            let lineageRole = isBaseline ? 'Foundational Prior Art' : 'Empirical Benchmark Study';
+            let rolePillClass = isBaseline ? 'pill-baseline' : 'pill-benchmark';
+
+            let lineageExplanation = '';
+            if (isBaseline) {
+                lineageExplanation = 'Seminal baseline publication that defines core protocols, architecture, and baseline measurements for this research area.';
+            } else {
+                lineageExplanation = `Builds upon prior art (${foundation ? foundation.label : 'baseline'}), directly evaluating optimizations and throughput against baseline metrics.`;
+            }
 
             return {
-                ...node,
-                x,
-                y,
-                radius: r,
-                textY: y + 4,
-                subTextY: y + r + 14,
-                shortLabel,
-                circleClass
+                ...p,
+                stepNumber,
+                isBaseline,
+                isSelected,
+                cardClass: isSelected ? 'timeline-card selected' : 'timeline-card',
+                lineageRole,
+                rolePillClass,
+                lineageExplanation,
+                venueText: p.venue || 'Peer-Reviewed Conference / Journal',
+                citationsLabel: `${p.citations || 0} Citations`,
+                yearText: p.year ? `${p.year}` : '2024'
             };
         });
     }
 
-    get renderLinks() {
-        const nodes = this.renderNodes;
-        const nodeMap = new Map();
-        nodes.forEach(n => nodeMap.set(n.id, n));
-
-        return this.rawLinks.map((link, idx) => {
-            const src = nodeMap.get(link.source);
-            const tgt = nodeMap.get(link.target);
-            if (src && tgt) {
-                return {
-                    id: `link-${idx}`,
-                    x1: src.x,
-                    y1: src.y,
-                    x2: tgt.x,
-                    y2: tgt.y,
-                    dash: '0'
-                };
-            }
-            return null;
-        }).filter(l => l !== null);
+    get selectedPaper() {
+        if (!this.papersList || this.papersList.length === 0) return null;
+        const found = this.papersList.find(p => p.id === this.selectedPaperId);
+        return found || this.papersList[0];
     }
 
-    handleNodeClick(event) {
-        const nodeId = event.currentTarget.dataset.id;
-        const found = this.rawNodes.find(n => n.id === nodeId);
-        if (found) {
-            this.selectedNode = found;
-        }
+    get isSortChronological() {
+        return this.sortOrder === 'chronological';
+    }
+
+    get isSortCitations() {
+        return this.sortOrder === 'citations';
+    }
+
+    handleSelectPaper(event) {
+        this.selectedPaperId = event.currentTarget.dataset.id;
+    }
+
+    handleSetChronological() {
+        this.sortOrder = 'chronological';
+    }
+
+    handleSetCitations() {
+        this.sortOrder = 'citations';
     }
 
     handleResetView() {
-        if (this.rawNodes.length > 0) {
-            this.selectedNode = this.rawNodes[0];
+        this.sortOrder = 'chronological';
+        if (this.foundationalPaper) {
+            this.selectedPaperId = this.foundationalPaper.id;
         }
     }
 }

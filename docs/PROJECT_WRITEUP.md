@@ -1,4 +1,4 @@
-# Ereuna Research Radar: Autonomous Academic Literature Intelligence Platform
+# Research Radar: Autonomous Academic Literature Intelligence Platform
 ## Cloud Computing Capstone Project Writeup & Technical Report
 
 **Course**: BMEE355E — Cloud Computing  
@@ -10,9 +10,9 @@
 
 ## 1. Executive Summary
 
-Scientific literature is expanding exponentially, with over 3 million peer-reviewed papers published annually. Researchers, engineers, and cloud architects struggle with **literature fragmentation**, **unverifiable claims**, **conflicting empirical findings**, and the **hallucination risks** of ungrounded Large Language Models. 
+Scientific literature is expanding exponentially, with over 3 million peer-reviewed papers published annually. Researchers, engineers, and scientists struggle with **literature fragmentation**, **unverifiable claims**, **conflicting empirical findings**, and the **hallucination risks** of ungrounded Large Language Models. 
 
-**Ereuna Research Radar** is an enterprise-grade cloud computing platform developed on the **Salesforce Lightning Platform (PaaS)**. Ereuna automates the synthesis of academic research into structured, queryable knowledge graphs, cross-paper comparison matrices, verified evidence repositories, and open experimental gap trackers. 
+**Research Radar** is an enterprise-grade cloud computing platform developed on the **Salesforce Lightning Platform (PaaS)**. Research Radar automates the synthesis of academic research into structured, queryable knowledge topologies, cross-paper comparison matrices, verified evidence repositories, and open experimental gap trackers. 
 
 By leveraging native cloud computing primitives—including metadata-driven architecture, multi-tenant database isolation, declarative roll-up summaries, strict validation engines, modern web standards (Lightning Web Components), and transactional Apex processing—Ereuna demonstrates how modern PaaS ecosystems can support mission-critical scientific intelligence systems.
 
@@ -41,9 +41,9 @@ This project directly maps to the core tenets of enterprise Cloud Computing:
 ```
 +-------------------------------------------------------------------------+
 |                  SaaS Layer (Software-as-a-Service)                     |
-|  - Ereuna Lightning App ("Ereuna Research Radar")                       |
+|  - Lightning App ("Research Radar")                                     |
 |  - Executive KPI Dashboard & Synthesizer                                |
-|  - Force-Directed Citation Network Graph & Literature Compare Matrix    |
+|  - Literature Comparison Matrix & Gap Tracker                           |
 +-------------------------------------------------------------------------+
                                     |
 +-------------------------------------------------------------------------+
@@ -209,7 +209,7 @@ Following deployment and data seeding in the active Salesforce org:
 
 ## 11. Conclusion & Future Work
 
-Ereuna Research Radar demonstrates the power of Salesforce as an enterprise PaaS environment beyond traditional CRM. By combining relational schema enforcement, declarative integrity rules, and modern Lightning Web Components, Ereuna provides researchers with a trustworthy, verifiable, and visually intuitive platform for navigating the frontiers of Cloud Computing research.
+Research Radar demonstrates the power of Salesforce as an enterprise PaaS environment beyond traditional CRM. By combining relational schema enforcement, declarative integrity rules, and modern Lightning Web Components, Research Radar provides researchers with a trustworthy, verifiable, and visually intuitive platform for navigating the frontiers of academic research.
 
 Future enhancements include:
 1. Integration with **Salesforce Einstein AI** / Agentforce for autonomous PDF parsing.

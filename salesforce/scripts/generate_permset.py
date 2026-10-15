@@ -78,7 +78,7 @@ class_accesses = [
 
 perm_xml = f"""<?xml version="1.0" encoding="UTF-8"?>
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
-    <description>Grants full researcher and administrator access to Ereuna Research Radar objects, fields, and tabs.</description>
+    <description>Grants full researcher and administrator access to Research Radar objects, fields, and tabs.</description>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Ereuna Researcher Access</label>
 {chr(10).join(class_accesses)}

@@ -1,5 +1,5 @@
 /**
- * @description Lightning Controller supporting Ereuna Research Radar UI and LWC components.
+ * @description Lightning Controller supporting Research Radar UI and LWC components.
  */
 public with sharing class EreunaController {
     
@@ -168,13 +168,13 @@ public with sharing class EreunaController {
             throw new AuraHandledException('Topic is required to build a research map.');
         }
 
-        String targetDisc = String.isNotBlank(discipline) ? discipline : 'Cloud Computing';
+        String targetDisc = String.isNotBlank(discipline) ? discipline : 'Chemical Engineering';
 
         Research_Map__c newMap = new Research_Map__c(
             Topic__c = topic,
             Status__c = 'Synthesized',
             Target_Discipline__c = targetDisc,
-            Synthesis_Summary__c = 'Automated synthesis on "' + topic + '". Literature confirms accelerating adoption of containerized microservices and automated elasticity models. Empirical evidence underscores trade-offs between orchestration complexity and resource utilization efficiency.'
+            Synthesis_Summary__c = 'Automated synthesis on "' + topic + '". Literature confirms high selectivity and kinetic performance across advanced reaction systems. Empirical evidence underscores critical thermodynamic trade-offs between operating pressures, catalyst surface stability, and space-time yield.'
         );
         insert newMap;
 
@@ -208,22 +208,22 @@ public with sharing class EreunaController {
             insert new Research_Finding__c(
                 Research_Map__c = newMap.Id,
                 Research_Paper__c = matchingPapers[0].Id,
-                Claim_Summary__c = 'Synthesized finding: Orchestration overhead accounts for less than 3% total latency.',
-                Exact_Quote__c = 'Across continuous test workloads, the container scheduler maintained orchestration overhead under 3% of aggregate query response times.',
-                Page_Number__c = 3,
-                Section_Name__c = 'Empirical Analysis',
+                Claim_Summary__c = 'Synthesized finding: Microchannel heat integration elevates space-time yield by 38% under isothermal conditions.',
+                Exact_Quote__c = 'Across continuous bench-scale trials, the integrated microchannel reactor maintained isothermal reaction zones within ±1.5 K, achieving space-time yields 38% higher than conventional packed-bed units.',
+                Page_Number__c = 4,
+                Section_Name__c = 'Reaction Kinetics & Thermal Management',
                 Verification_Status__c = 'Verified',
-                Confidence_Score__c = 95.0
+                Confidence_Score__c = 96.0
             );
         }
 
         // Add a research gap
         insert new Research_Gap__c(
             Research_Map__c = newMap.Id,
-            Problem_Statement__c = 'Insufficient benchmarking under dynamic real-time network partitioning in hybrid-cloud settings.',
-            Proposed_Experiment__c = 'Simulate multi-region network latency degradation up to 200ms and measure automated failover recovery times.',
+            Problem_Statement__c = 'Catalyst active site deactivation kinetics under fluctuating feed gas stoichiometric ratios in industrial production.',
+            Proposed_Experiment__c = 'Deploy in-situ DRIFTS spectroscopy in a differential reactor with dynamic gas switching to quantify catalyst surface phase transitions.',
             Priority__c = 'High',
-            Estimated_Complexity__c = 'Medium',
+            Estimated_Complexity__c = 'High',
             Status__c = 'Identified'
         );
 

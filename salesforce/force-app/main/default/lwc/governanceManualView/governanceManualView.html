@@ -1,0 +1,197 @@
+<template>
+    <div class="manual-page-container">
+        <!-- Header Banner -->
+        <div class="manual-header">
+            <div class="manual-header-content">
+                <div class="manual-badge-row">
+                    <span class="manual-badge">OFFICIAL REGULATORY &amp; OPERATIONAL DISCLOSURE</span>
+                    <span class="manual-ref">DOC REF: RR-MANUAL-2026-V1</span>
+                </div>
+                <h1 class="manual-title">RESEARCH RADAR</h1>
+                <p class="manual-subtitle">User Operational Manual, Terms of Service, Engineering Research Disclaimers, Data Provenance &amp; Regulatory Compliance Framework</p>
+                <div class="manual-meta-pills">
+                    <span class="meta-pill">Scope: Multi-Disciplinary Engineering &amp; Applied Sciences</span>
+                    <span class="meta-pill">Branches: CS, Electrical, Mechanical, Civil, Chemical, Materials</span>
+                    <span class="meta-pill">Version: 4.2 Lightning PaaS</span>
+                </div>
+            </div>
+            <div class="manual-header-actions">
+                <a href="/resource/ResearchRadarGovernanceManual" target="_blank" class="btn-download-pdf">
+                    <lightning-icon icon-name="utility:download" size="x-small" variant="inverse" class="slds-m-right_x-small"></lightning-icon>
+                    <span>Download Official PDF Document</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Sticky Section Navigation Bar -->
+        <div class="sticky-nav-bar">
+            <button class={navManualClass} onclick={handleSwitchTab} data-tab="manual">1. User Operational Manual</button>
+            <button class={navTermsClass} onclick={handleSwitchTab} data-tab="terms">2. Terms &amp; Conditions</button>
+            <button class={navDisclaimerClass} onclick={handleSwitchTab} data-tab="disclaimer">3. Legal &amp; Research Disclaimer</button>
+            <button class={navSourcesClass} onclick={handleSwitchTab} data-tab="sources">4. Data Sources &amp; APIs</button>
+            <button class={navRegulationsClass} onclick={handleSwitchTab} data-tab="regulations">5. Regulatory Framework</button>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="manual-body">
+            <!-- SECTION 1: USER OPERATIONAL MANUAL -->
+            <template if:true={isTabManual}>
+                <section class="doc-card">
+                    <h2 class="card-h2">1. Comprehensive User Operational Manual</h2>
+                    <p class="card-lead">Research Radar accelerates academic literature reviews across engineering disciplines from weeks of manual curation into sub-second deterministic queries grounded in a relational ACID architecture on Salesforce.</p>
+                    
+                    <h3 class="card-h3">1.1 Core Navigation &amp; Workspaces</h3>
+                    <div class="grid-2col slds-m-bottom_medium">
+                        <div class="feature-box">
+                            <strong>Research Radar Dashboard</strong>
+                            <p>Real-time executive metrics, branch filters (All, Chemical, Mechanical, Civil, EEE, ECE), and autonomous topic synthesis engine.</p>
+                        </div>
+                        <div class="feature-box">
+                            <strong>Research Maps Hub</strong>
+                            <p>Topological library displaying synthesized literature clusters and launching deep multi-paper workspaces.</p>
+                        </div>
+                        <div class="feature-box">
+                            <strong>Research Papers Catalog</strong>
+                            <p>Full-text catalog indexed by DOI, publication year, impact, journal citations, and BibTeX citations.</p>
+                        </div>
+                        <div class="feature-box">
+                            <strong>Research Gap Kanban Board</strong>
+                            <p>Multi-stage tracker (Identified &rarr; In Review &rarr; Experiment Drafted &rarr; Addressed) shepherding empirical questions.</p>
+                        </div>
+                        <div class="feature-box">
+                            <strong>Verified Findings Explorer</strong>
+                            <p>Granular empirical claim catalog featuring verbatim quote extractions and statistical confidence scores.</p>
+                        </div>
+                    </div>
+
+                    <h3 class="card-h3">1.2 Autonomous Literature Synthesis Workflow</h3>
+                    <ol class="step-list">
+                        <li><strong>Input Query:</strong> Enter your research phrase (e.g., <em>"Serverless cold-start latency mitigation"</em>, <em>"GaN microgrid power conversion"</em>, or <em>"Conjugate heat transfer in microchannels"</em>).</li>
+                        <li><strong>Select Target Discipline:</strong> Choose your domain (All, Chemical, Mechanical, Civil, EEE, ECE, Computer Science).</li>
+                        <li><strong>Execute Synthesis:</strong> Apex controllers query indexed corpora, instantiate a new Research_Map__c record, correlate matching peer-reviewed papers via junction objects, extract quantitative metrics, and flag active contradictions.</li>
+                        <li><strong>Open Workspace:</strong> Click <em>Open Workspace &rarr;</em> in the synthesized topics table to inspect the deep comparison matrix and empirical evidence.</li>
+                    </ol>
+
+                    <h3 class="card-h3">1.3 Metric Comparison Matrix &amp; Parameters</h3>
+                    <p>Quantitative benchmarks are normalized across physical and engineering attributes:</p>
+                    <ul class="bullet-list">
+                        <li><strong>Performance &amp; Latency:</strong> Cold-start overhead (ms), Execution latency, Throughput (req/s), Bandwidth.</li>
+                        <li><strong>Energy &amp; Power Density:</strong> Power conversion efficiency %, Power density (W/cm²), Overpotential (mV).</li>
+                        <li><strong>Thermal &amp; Transport Phenomena:</strong> Heat transfer coefficient (W/m²·K), Thermal resistance (°C/W), Nusselt/Reynolds correlations.</li>
+                        <li><strong>Materials &amp; Yield:</strong> Space-Time Yield (g/kg·h), Permeance selectivity factor, Compressive strength (MPa).</li>
+                    </ul>
+                </section>
+            </template>
+
+            <!-- SECTION 2: TERMS AND CONDITIONS -->
+            <template if:true={isTabTerms}>
+                <section class="doc-card">
+                    <h2 class="card-h2">2. Terms and Conditions of Academic Service</h2>
+                    <p class="card-lead">By accessing Research Radar, users agree to international academic integrity standards and institutional research guidelines.</p>
+
+                    <h3 class="card-h3">2.1 Intellectual Property &amp; Ownership</h3>
+                    <ul class="bullet-list">
+                        <li><strong>User-Generated Syntheses:</strong> Researchers retain 100% intellectual property ownership over synthesized Research Maps, derived hypotheses, and experimental gap protocols created within their tenancy.</li>
+                        <li><strong>Primary Source Copyrights:</strong> Indexed publications, verbatim quotes, and DOI metadata remain copyrighted by their respective authors and publishing societies (IEEE, ACM, Elsevier, ACS, Wiley, Springer Nature, etc.).</li>
+                        <li><strong>Fair Use Compliance:</strong> Platform excerpting strictly complies with 17 U.S. Code § 107 (Fair Use) and Directive (EU) 2019/790 for Text and Data Mining (TDM) in scientific research.</li>
+                    </ul>
+
+                    <h3 class="card-h3">2.2 Academic Integrity &amp; Acceptable Use</h3>
+                    <p>Research Radar is provided exclusively for verified academic, educational, and scientific research. Users shall not utilize the platform to generate deceptive, falsified, or plagiarized research output.</p>
+                </section>
+            </template>
+
+            <!-- SECTION 3: LEGAL & SAFETY DISCLAIMER -->
+            <template if:true={isTabDisclaimer}>
+                <section class="doc-card">
+                    <h2 class="card-h2">3. Legal Disclaimer &amp; Research Integrity Advisory</h2>
+
+                    <div class="hazard-callout slds-m-bottom_medium">
+                        <div class="hazard-title">ACADEMIC RESEARCH &amp; ENGINEERING IMPLEMENTATION NOTICE</div>
+                        <p class="hazard-body">
+                            Research Radar is an automated computational intelligence platform developed strictly for academic literature synthesis, conceptual exploratory research, and citation analysis. 
+                            <strong>Algorithmic outputs, extracted metrics, and synthesized research maps are assistive resources and DO NOT constitute certified peer review, professional engineering design certification, or actionable laboratory protocols.</strong>
+                        </p>
+                    </div>
+
+                    <h3 class="card-h3">3.1 Independent Professional &amp; Experimental Verification</h3>
+                    <p>Researchers, engineers, and practitioners must independently verify all extracted data, quantitative metrics, mathematical formulas, and methodological procedures against primary publisher DOI sources before applying them in physical engineering implementations, structural designs, electronic circuits, software systems, or laboratory experiments.</p>
+
+                    <h3 class="card-h3">3.2 Operational &amp; Laboratory Safety Advisory</h3>
+                    <p>Experimental and physical engineering research (including chemical processes, electrical prototyping, thermal management, and structural fabrication) involves inherent physical hazards. All experimental testing must be conducted under qualified institutional supervision with appropriate Environmental Health &amp; Safety (EHS), OSHA, and IEEE electrical safety protocols.</p>
+
+                    <h3 class="card-h3">3.3 Limitation of Liability</h3>
+                    <p>THE PLATFORM IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED. UNDER NO CIRCUMSTANCES SHALL RESEARCH RADAR, ITS DEVELOPERS, OR AFFILIATED INSTITUTIONS BE HELD LIABLE FOR DIRECT, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING FROM RELIANCE ON SYNTHESIZED LITERATURE, DESIGN CHOICES, OR PHYSICAL EXPERIMENTAL FAILURES.</p>
+                </section>
+            </template>
+
+            <!-- SECTION 4: DATA SOURCES & PROVENANCE -->
+            <template if:true={isTabSources}>
+                <section class="doc-card">
+                    <h2 class="card-h2">4. Data Sources &amp; Citation Provenance</h2>
+                    <p class="card-lead">Research Radar enforces strict citation provenance. Every cataloged paper, metric, and finding originates from authoritative, peer-reviewed academic indexing repositories:</p>
+
+                    <div class="sources-table-container slds-m-top_medium">
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th>Repository Source</th>
+                                    <th>Ingestion Protocol</th>
+                                    <th>Coverage Scope</th>
+                                    <th>Attribution Standard</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>CrossRef REST API</strong></td>
+                                    <td>Direct HTTPS JSON-LD</td>
+                                    <td>Official DOI registration, metadata, funding registries across all engineering branches</td>
+                                    <td>Permanent DOI URI Links</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>OpenAlex Academic Graph</strong></td>
+                                    <td>REST Entity Endpoint</td>
+                                    <td>Citation networks, institutional affiliations, and concepts across all STEM fields</td>
+                                    <td>CC0 Open Metadata License</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Semantic Scholar (S2)</strong></td>
+                                    <td>Graph API v1</td>
+                                    <td>Highly influential citations, citation velocity, and TLDR summaries</td>
+                                    <td>Semantic Scholar Attribution</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>arXiv &amp; TechRxiv</strong></td>
+                                    <td>OAI-PMH &amp; Atom Feeds</td>
+                                    <td>Preprint tracking in computer science, microelectronics, physics, materials, and chemistry</td>
+                                    <td>arXiv Open Access terms</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Publisher TDM Feeds (IEEE, ACM, Elsevier)</strong></td>
+                                    <td>Authorized XML APIs</td>
+                                    <td>Full-text structured XML, tables, benchmarks, and conference proceedings</td>
+                                    <td>Publisher Fair Use / TDM</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </template>
+
+            <!-- SECTION 5: REGULATORY COMPLIANCE -->
+            <template if:true={isTabRegulations}>
+                <section class="doc-card">
+                    <h2 class="card-h2">5. Regulatory Compliance &amp; Governance Standards</h2>
+                    <p class="card-lead">Research Radar conforms to international scientific data privacy, ethical AI governance, and academic integrity regulations:</p>
+
+                    <ul class="bullet-list slds-m-top_small">
+                        <li><strong>GDPR (EU 2016/679) &amp; CCPA:</strong> Zero-retention privacy architecture. Private user queries and draft hypotheses are never sold, commercialized, or shared with third-party foundation model trainers.</li>
+                        <li><strong>EU Artificial Intelligence Act:</strong> Compliance with Article 52 algorithmic transparency mandates. Every AI synthesis clearly provides human-verifiable citations linking to registered DOIs.</li>
+                        <li><strong>FAIR Data Principles:</strong> Full support for Findable, Accessible, Interoperable, and Reusable scientific data via structured JSON-LD and BibTeX schema.</li>
+                        <li><strong>IEEE &amp; ACM Code of Ethics:</strong> Rigorous adherence to intellectual honesty, avoidance of scientific misinformation, and algorithmic accountability.</li>
+                    </ul>
+                </section>
+            </template>
+        </div>
+    </div>
+</template>

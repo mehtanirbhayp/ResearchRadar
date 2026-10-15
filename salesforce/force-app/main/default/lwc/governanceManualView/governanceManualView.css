@@ -1,0 +1,245 @@
+:host {
+    display: block;
+    background: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #111111;
+}
+
+.manual-page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 3rem 1rem;
+}
+
+.manual-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 2px solid #000000;
+    padding-bottom: 1.25rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.manual-badge-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.manual-badge {
+    background: #000000;
+    color: #ffffff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    letter-spacing: 0.05em;
+    border-radius: 2px;
+}
+
+.manual-ref {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #666666;
+}
+
+.manual-title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #000000;
+    margin: 0 0 4px 0;
+}
+
+.manual-subtitle {
+    font-size: 0.85rem;
+    color: #444444;
+    max-width: 750px;
+    line-height: 1.35;
+    margin: 0 0 10px 0;
+}
+
+.manual-meta-pills {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.meta-pill {
+    background: #f5f5f5;
+    border: 1px solid #dcdcdc;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #333333;
+    padding: 2px 8px;
+    border-radius: 2px;
+}
+
+.btn-download-pdf {
+    display: inline-flex;
+    align-items: center;
+    background: #000000;
+    color: #ffffff !important;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 8px 14px;
+    border-radius: 2px;
+    text-decoration: none !important;
+    transition: background 0.15s ease;
+}
+
+.btn-download-pdf:hover {
+    background: #2b2b2b;
+    color: #ffffff !important;
+}
+
+/* Sticky Section Navigation */
+.sticky-nav-bar {
+    display: flex;
+    gap: 6px;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 8px;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    background: #ffffff;
+    border: 1px solid #cccccc;
+    color: #333333;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.tab-btn:hover {
+    border-color: #000000;
+    color: #000000;
+}
+
+.tab-btn.active {
+    background: #000000;
+    border-color: #000000;
+    color: #ffffff;
+}
+
+/* Document Cards */
+.doc-card {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    padding: 1.5rem;
+    border-radius: 2px;
+    line-height: 1.5;
+}
+
+.card-h2 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #000000;
+    margin: 0 0 8px 0;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.card-lead {
+    font-size: 0.9rem;
+    color: #333333;
+    margin-bottom: 1.25rem;
+}
+
+.card-h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #111111;
+    margin: 1.25rem 0 6px 0;
+}
+
+.grid-2col {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+}
+
+.feature-box {
+    background: #fafafa;
+    border: 1px solid #e5e5e5;
+    border-left: 3px solid #000000;
+    padding: 10px 12px;
+    border-radius: 2px;
+}
+
+.feature-box strong {
+    display: block;
+    font-size: 0.85rem;
+    color: #000000;
+    margin-bottom: 3px;
+}
+
+.feature-box p {
+    font-size: 0.78rem;
+    color: #555555;
+    margin: 0;
+    line-height: 1.3;
+}
+
+.step-list {
+    padding-left: 20px;
+    font-size: 0.85rem;
+    color: #333333;
+}
+
+.step-list li {
+    margin-bottom: 8px;
+}
+
+.bullet-list {
+    padding-left: 18px;
+    font-size: 0.85rem;
+    color: #333333;
+}
+
+.bullet-list li {
+    margin-bottom: 6px;
+}
+
+.hazard-callout {
+    border: 1px solid #000000;
+    border-left: 5px solid #000000;
+    background: #fbfbfb;
+    padding: 12px 14px;
+    border-radius: 2px;
+}
+
+.hazard-title {
+    font-size: 0.82rem;
+    font-weight: 800;
+    color: #000000;
+    margin-bottom: 4px;
+}
+
+.hazard-body {
+    font-size: 0.8rem;
+    color: #222222;
+    line-height: 1.4;
+}
+
+.sources-table-container {
+    overflow-x: auto;
+}
+
+.sources-table-container th {
+    background: #000000;
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.sources-table-container td {
+    font-size: 0.78rem;
+    color: #222222;
+}

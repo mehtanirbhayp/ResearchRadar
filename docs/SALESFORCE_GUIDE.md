@@ -2,7 +2,7 @@
 
 ## Overview
 
-**Ereuna Research Radar** has been fully engineered and deployed as a native enterprise cloud application on **Salesforce Lightning Platform (Force.com PaaS)**. It transforms academic literature synthesis and review pipelines into a structured, verifiable multi-tenant database with interactive Lightning Web Components (LWCs), robust data security, validation rules, roll-up summaries, and analytics.
+**Research Radar** has been fully engineered and deployed as a native enterprise cloud application on **Salesforce Lightning Platform (Force.com PaaS)**. It transforms academic literature synthesis and review pipelines into a structured, verifiable multi-tenant database with interactive Lightning Web Components (LWCs), robust data security, validation rules, roll-up summaries, and analytics.
 
 ---
 
@@ -93,9 +93,9 @@ sf org open --path lightning/app/c__Ereuna_Research_Radar --target-org trailhead
 sf org open --path lightning/o/Research_Map__c/list --target-org trailheadOrg
 ```
 
-### Step 2: Open "Ereuna Research Radar" in the App Launcher
+### Step 2: Open "Research Radar" in the App Launcher
 1. In Salesforce, click the **App Launcher** (the 9 dots icon in the top left).
-2. Search for **"Ereuna Research Radar"** and select it.
+2. Search for **"Research Radar"** and select it.
 3. You will see navigation tabs for:
    - **Research Maps**
    - **Research Papers**

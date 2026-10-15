@@ -2,7 +2,7 @@
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>62.0</apiVersion>
     <isExposed>true</isExposed>
-    <masterLabel>Ereuna Literature Comparison Matrix</masterLabel>
+    <masterLabel>Research Radar Literature Comparison Matrix</masterLabel>
     <description>Side-by-side comparison table of research papers and metrics.</description>
     <targets>
         <target>lightning__RecordPage</target>

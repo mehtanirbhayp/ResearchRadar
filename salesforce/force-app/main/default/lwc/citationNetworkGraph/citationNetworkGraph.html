@@ -1,109 +1,136 @@
 <template>
-    <lightning-card title="Citation Network &amp; Influence Graph" icon-name="custom:custom90">
-        <div slot="actions">
-            <lightning-button label="Reset View" icon-name="utility:refresh" onclick={handleResetView}></lightning-button>
+    <lightning-card title="Research Lineage &amp; Citation Timeline" icon-name="standard:timeline">
+        <div slot="actions" class="actions-group">
+            <lightning-button-group>
+                <lightning-button
+                    label="Chronological Timeline"
+                    variant={isSortChronological}
+                    onclick={handleSetChronological}>
+                </lightning-button>
+                <lightning-button
+                    label="By Citation Impact"
+                    variant={isSortCitations}
+                    onclick={handleSetCitations}>
+                </lightning-button>
+            </lightning-button-group>
+            <lightning-button
+                label="Reset"
+                icon-name="utility:refresh"
+                onclick={handleResetView}
+                class="slds-m-left_x-small">
+            </lightning-button>
         </div>
 
         <div class="slds-p-around_medium">
             <template if:true={isLoading}>
                 <div class="slds-p-around_large slds-text-align_center">
-                    <lightning-spinner alternative-text="Generating citation graph" size="medium"></lightning-spinner>
+                    <lightning-spinner alternative-text="Loading literature timeline" size="medium"></lightning-spinner>
                 </div>
             </template>
 
             <template if:false={isLoading}>
-                <template if:true={hasGraphData}>
-                    <div class="slds-grid slds-gutters">
-                        <!-- Interactive SVG Canvas -->
-                        <div class="slds-col slds-size_8-of-12">
-                            <div class="graph-canvas-container">
-                                <svg class="network-svg" viewBox="0 0 700 450" preserveAspectRatio="xMidYMid meet">
-                                    <!-- Render Link Lines -->
-                                    <template for:each={renderLinks} for:item="link">
-                                        <line
-                                            key={link.id}
-                                            x1={link.x1}
-                                            y1={link.y1}
-                                            x2={link.x2}
-                                            y2={link.y2}
-                                            stroke="#bbbbbb"
-                                            stroke-width="1.5"
-                                            stroke-opacity="0.8">
-                                        </line>
-                                    </template>
+                <template if:true={hasData}>
+                    <!-- Metric Summary Strip -->
+                    <div class="summary-strip slds-m-bottom_medium">
+                        <div class="summary-item">
+                            <span class="summary-label">Timeline Span</span>
+                            <span class="summary-val">{yearSpan}</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Cluster Citations</span>
+                            <span class="summary-val">{totalCitations}</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Foundational Anchor</span>
+                            <span class="summary-val-truncate" title={foundationalPaper.label}>{foundationalPaper.label}</span>
+                        </div>
+                    </div>
 
-                                    <!-- Render Nodes -->
-                                    <template for:each={renderNodes} for:item="node">
-                                        <g key={node.id} class="node-group" onclick={handleNodeClick} data-id={node.id}>
-                                            <circle
-                                                cx={node.x}
-                                                cy={node.y}
-                                                r={node.radius}
-                                                class={node.circleClass}
-                                                stroke="#ffffff"
-                                                stroke-width="3">
-                                            </circle>
-                                            <text
-                                                x={node.x}
-                                                y={node.textY}
-                                                text-anchor="middle"
-                                                class="node-label">
-                                                {node.shortLabel}
-                                            </text>
-                                            <text
-                                                x={node.x}
-                                                y={node.subTextY}
-                                                text-anchor="middle"
-                                                class="node-sublabel">
-                                                {node.citations} cites
-                                            </text>
-                                        </g>
-                                    </template>
-                                </svg>
+                    <!-- Main Timeline + Inspector Grid -->
+                    <div class="slds-grid slds-wrap slds-gutters">
+                        <!-- Left: Chronological Progression Track -->
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_7-of-12 slds-m-bottom_small">
+                            <div class="timeline-container">
+                                <template for:each={papersList} for:item="paper">
+                                    <div key={paper.id} class="timeline-entry">
+                                        <!-- Step Marker Icon -->
+                                        <div class="timeline-marker">
+                                            <span class="marker-number">{paper.yearText}</span>
+                                        </div>
+
+                                        <!-- Timeline Card Content -->
+                                        <div class={paper.cardClass} onclick={handleSelectPaper} data-id={paper.id}>
+                                            <div class="card-header-row">
+                                                <span class={paper.rolePillClass}>{paper.lineageRole}</span>
+                                                <span class="pill-citations">{paper.citationsLabel}</span>
+                                            </div>
+
+                                            <h3 class="paper-title">{paper.label}</h3>
+
+                                            <div class="paper-meta-row">
+                                                <span class="paper-authors">{paper.authors}</span>
+                                                <span class="meta-dot">&bull;</span>
+                                                <span class="paper-venue">{paper.venueText}</span>
+                                            </div>
+
+                                            <div class="lineage-callout">
+                                                <span class="callout-label">Lineage Role:</span>
+                                                <span class="callout-text">{paper.lineageExplanation}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
                             </div>
                         </div>
 
-                        <!-- Node Detail Inspector Drawer -->
-                        <div class="slds-col slds-size_4-of-12">
-                            <template if:true={selectedNode}>
-                                <div class="detail-panel">
-                                    <span class="tag-pill">{selectedNode.discipline}</span>
-                                    <h3 class="node-title"><strong>{selectedNode.label}</strong></h3>
-                                    <p class="node-authors">
-                                        <strong>Authors:</strong> {selectedNode.authors}
-                                    </p>
-                                    <div class="slds-grid slds-gutters slds-m-bottom_small">
-                                        <div class="slds-col">
-                                            <span class="meta-label">Year:</span>
-                                            <div class="meta-val">{selectedNode.year}</div>
+                        <!-- Right: Detailed Inspector Panel -->
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_5-of-12 slds-m-bottom_small">
+                            <template if:true={selectedPaper}>
+                                <div class="inspector-panel">
+                                    <div class="inspector-top-row">
+                                        <span class={selectedPaper.rolePillClass}>{selectedPaper.lineageRole}</span>
+                                        <span class="pill-citations">{selectedPaper.citationsLabel}</span>
+                                    </div>
+
+                                    <h2 class="inspector-title">{selectedPaper.label}</h2>
+                                    <p class="inspector-authors"><strong>Authors:</strong> {selectedPaper.authors}</p>
+
+                                    <div class="inspector-grid">
+                                        <div class="inspector-grid-item">
+                                            <span class="grid-label">Publication Year</span>
+                                            <span class="grid-value">{selectedPaper.yearText}</span>
                                         </div>
-                                        <div class="slds-col">
-                                            <span class="meta-label">Citations:</span>
-                                            <div class="meta-val">{selectedNode.citations}</div>
+                                        <div class="inspector-grid-item">
+                                            <span class="grid-label">Primary Discipline</span>
+                                            <span class="grid-value">{selectedPaper.discipline}</span>
                                         </div>
                                     </div>
-                                    <template if:true={selectedNode.url}>
-                                        <a href={selectedNode.url} target="_blank" rel="noopener noreferrer" class="black-action-btn">
-                                            Open Research Article
+
+                                    <div class="inspector-section">
+                                        <span class="section-heading">Venue / Proceedings</span>
+                                        <p class="section-content">{selectedPaper.venueText}</p>
+                                    </div>
+
+                                    <div class="inspector-section">
+                                        <span class="section-heading">Evolutionary Context</span>
+                                        <p class="section-content">{selectedPaper.lineageExplanation}</p>
+                                    </div>
+
+                                    <template if:true={selectedPaper.url}>
+                                        <a href={selectedPaper.url} target="_blank" rel="noopener noreferrer" class="black-action-btn">
+                                            Open Research Article &rarr;
                                         </a>
                                     </template>
-                                </div>
-                            </template>
-
-                            <template if:false={selectedNode}>
-                                <div class="empty-panel">
-                                    <p class="empty-title">Select a Paper Node</p>
-                                    <p class="empty-desc">Click any node circle in the graph to view citation metadata and open-access links.</p>
                                 </div>
                             </template>
                         </div>
                     </div>
                 </template>
 
-                <template if:false={hasGraphData}>
-                    <div class="empty-panel">
-                        <p class="empty-title">No Citation Network Available</p>
-                        <p class="empty-desc">Link at least 2 papers to this Research Map to visualize citation relationships.</p>
+                <template if:false={hasData}>
+                    <div class="empty-state">
+                        <p class="empty-title">No Literature Milestones Available</p>
+                        <p class="empty-desc">Link peer-reviewed research papers to this map to generate the chronological lineage timeline.</p>
                     </div>
                 </template>
             </template>

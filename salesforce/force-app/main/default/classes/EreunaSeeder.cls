@@ -1,5 +1,5 @@
 /**
- * @description Comprehensive Data Seeder for Ereuna Research Radar.
+ * @description Comprehensive Data Seeder for Research Radar.
  * Populates realistic, publication-grade academic papers, syntheses, benchmarks, conflicts, and gaps.
  */
 public with sharing class EreunaSeeder {

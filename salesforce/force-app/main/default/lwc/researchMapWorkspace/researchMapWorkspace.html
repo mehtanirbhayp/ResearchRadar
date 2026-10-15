@@ -29,15 +29,8 @@
 
         <!-- Clean Tabs Content -->
         <div class="workspace-tabs-container">
-            <lightning-tabset variant="scoped" active-tab-value="graph">
-                <!-- Tab 1: Citation Network Graph -->
-                <lightning-tab label="Citation Network" value="graph" icon-name="utility:graph">
-                    <div class="tab-pane">
-                        <c-citation-network-graph record-id={recordId}></c-citation-network-graph>
-                    </div>
-                </lightning-tab>
-
-                <!-- Tab 2: Literature Comparison Matrix -->
+            <lightning-tabset variant="scoped" active-tab-value="matrix">
+                <!-- Tab 1: Literature Comparison Matrix -->
                 <lightning-tab label="Literature Comparison" value="matrix" icon-name="utility:matrix">
                     <div class="tab-pane">
                         <c-literature-compare-matrix record-id={recordId}></c-literature-compare-matrix>

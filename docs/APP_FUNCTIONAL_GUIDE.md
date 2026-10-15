@@ -1,6 +1,6 @@
-# Ereuna Research Radar: Complete Functional Guide & User Manual
+# Research Radar: Complete Functional Guide & User Manual
 
-Welcome to **Ereuna Research Radar**, an autonomous Cloud Computing & Academic Literature Intelligence Platform built natively on the Salesforce Lightning PaaS (Platform-as-a-Service) architecture.
+Welcome to **Research Radar**, an autonomous Academic Literature Intelligence Platform built natively on the Salesforce Lightning PaaS (Platform-as-a-Service) architecture.
 
 This manual provides an exhaustive, step-by-step reference for **every single function, feature, custom object, Lightning Web Component (LWC), Apex service, and user workflow** in the application.
 
@@ -26,8 +26,8 @@ This manual provides an exhaustive, step-by-step reference for **every single fu
 ### Step 1: Open the App Launcher
 1. Log in to your Salesforce Developer or Trailhead Org.
 2. In the top-left corner of the Salesforce navigation bar, click the **App Launcher** (the 3x3 grid icon).
-3. In the search box, type **`Ereuna`**.
-4. Click on **`Ereuna Research Radar`**.
+3. In the search box, type **`Radar`**.
+4. Click on **`Research Radar`**.
 
 ### Step 2: Verifying Your Navigation Tabs
 Once opened, you will see the unified navigation bar featuring dedicated, 100% interactive Lightning Web Component experiences — zero plain tables:
@@ -264,4 +264,4 @@ Ereuna enforces 4 strict business rules to prevent data corruption:
 
 ---
 
-*Manual compiled for Ereuna Research Radar &bull; Cloud Computing Platform Architecture.*
+*Manual compiled for Research Radar &bull; Engineering Literature Intelligence Platform.*
