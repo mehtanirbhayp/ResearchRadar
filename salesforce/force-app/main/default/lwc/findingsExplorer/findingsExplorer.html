@@ -1,0 +1,109 @@
+<template>
+    <div class="findings-container">
+        <!-- Clean Header -->
+        <header class="findings-header">
+            <div class="slds-grid slds-grid_vertical-align-center slds-wrap">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_8-of-12">
+                    <h1 class="page-title">Verified Findings &amp; Evidence</h1>
+                    <p class="page-subtitle">
+                        Verbatim citations extracted from peer-reviewed literature with page references.
+                    </p>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-text-align_right slds-m-top_small-only">
+                    <span class="count-badge">
+                        {totalCountLabel}
+                    </span>
+                    <lightning-button label="Refresh" variant="neutral" onclick={handleRefresh} class="slds-m-left_small"></lightning-button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Filter Toolbar -->
+        <div class="toolbar-row slds-m-bottom_medium">
+            <div class="slds-grid slds-wrap slds-gutters slds-grid_vertical-align-center">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_5-of-12 slds-m-bottom_small">
+                    <lightning-input
+                        type="search"
+                        placeholder="Search claims, quotes, or authors..."
+                        value={searchKey}
+                        onchange={handleSearchChange}
+                        variant="label-hidden">
+                    </lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-m-bottom_small">
+                    <lightning-combobox
+                        name="mapFilter"
+                        value={selectedMapId}
+                        options={mapOptions}
+                        onchange={handleMapChange}
+                        placeholder="All Research Topics"
+                        variant="label-hidden">
+                    </lightning-combobox>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_3-of-12 slds-m-bottom_small slds-text-align_right">
+                    <lightning-button-group>
+                        <lightning-button label="All" variant={statusAllVariant} data-status="All" onclick={handleStatusFilter}></lightning-button>
+                        <lightning-button label="Verified" variant={statusVerVariant} data-status="Verified" onclick={handleStatusFilter}></lightning-button>
+                    </lightning-button-group>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Spinner -->
+        <template if:true={isLoading}>
+            <div class="slds-p-around_xx-large slds-text-align_center">
+                <lightning-spinner alternative-text="Loading verified claims" size="medium"></lightning-spinner>
+            </div>
+        </template>
+
+        <!-- Findings Cards Grid -->
+        <template if:false={isLoading}>
+            <template if:true={hasFindings}>
+                <div class="slds-grid slds-wrap slds-gutters">
+                    <template for:each={filteredFindings} for:item="f">
+                        <div key={f.Id} class="slds-col slds-size_1-of-1 slds-large-size_1-of-2 slds-m-bottom_medium">
+                            <article class="finding-card">
+                                <!-- Card Header -->
+                                <div class="card-meta-row">
+                                    <span class="tag-pill">{f.Verification_Status__c}</span>
+                                    <span class="confidence-text">{f.Confidence_Score__c}% Confidence</span>
+                                    <span class="topic-tag">{f.topicTitle}</span>
+                                </div>
+
+                                <!-- Claim Summary -->
+                                <h2 class="claim-title">{f.Claim_Summary__c}</h2>
+
+                                <!-- Verbatim Quote -->
+                                <blockquote class="quote-box">
+                                    &ldquo;{f.Exact_Quote__c}&rdquo;
+                                </blockquote>
+
+                                <div class="source-citation">
+                                    &mdash; <strong>{f.paperTitle}</strong> ({f.paperYear}) &bull; Sec. {f.Section_Name__c}, p. {f.Page_Number__c}
+                                </div>
+
+                                <!-- Card Footer -->
+                                <div class="card-footer">
+                                    <button
+                                        class="link-btn"
+                                        data-id={f.paperId}
+                                        onclick={handleNavigateToPaper}>
+                                        View Paper Record &rarr;
+                                    </button>
+                                </div>
+                            </article>
+                        </div>
+                    </template>
+                </div>
+            </template>
+
+            <!-- Empty State -->
+            <template if:false={hasFindings}>
+                <div class="empty-state">
+                    <p class="empty-title">No Evidence Records Found</p>
+                    <p class="empty-desc">No findings matched your search or status filter.</p>
+                </div>
+            </template>
+        </template>
+    </div>
+</template>

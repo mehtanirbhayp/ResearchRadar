@@ -88,30 +88,29 @@ public with sharing class EreunaController {
 
     @AuraEnabled(cacheable=true)
     public static List<Research_Finding__c> getMapFindings(Id mapId) {
-        if (mapId == null) {
-            return new List<Research_Finding__c>();
+        String query = 'SELECT Id, Name, Claim_Summary__c, Exact_Quote__c, Page_Number__c, Section_Name__c, ' +
+                       'Verification_Status__c, Confidence_Score__c, Research_Paper__r.Id, ' +
+                       'Research_Paper__r.Title__c, Research_Paper__r.Publication_Year__c, ' +
+                       'Research_Map__r.Id, Research_Map__r.Topic__c ' +
+                       'FROM Research_Finding__c ';
+        if (mapId != null) {
+            query += 'WHERE Research_Map__c = :mapId ';
         }
-        return [
-            SELECT Id, Name, Claim_Summary__c, Exact_Quote__c, Page_Number__c, Section_Name__c,
-                   Verification_Status__c, Confidence_Score__c,
-                   Research_Paper__r.Title__c, Research_Paper__r.Publication_Year__c
-            FROM Research_Finding__c
-            WHERE Research_Map__c = :mapId
-            ORDER BY Confidence_Score__c DESC
-        ];
+        query += 'ORDER BY Confidence_Score__c DESC LIMIT 100';
+        return Database.query(query);
     }
 
     @AuraEnabled(cacheable=true)
     public static List<Research_Conflict__c> getMapConflicts(Id mapId) {
-        if (mapId == null) {
-            return new List<Research_Conflict__c>();
+        String query = 'SELECT Id, Name, Disagreement_Area__c, Conflict_Description__c, Severity__c, ' +
+                       'Paper_A__r.Id, Paper_A__r.Title__c, Paper_B__r.Id, Paper_B__r.Title__c, ' +
+                       'Research_Map__r.Id, Research_Map__r.Topic__c ' +
+                       'FROM Research_Conflict__c ';
+        if (mapId != null) {
+            query += 'WHERE Research_Map__c = :mapId ';
         }
-        return [
-            SELECT Id, Name, Disagreement_Area__c, Conflict_Description__c, Severity__c,
-                   Paper_A__r.Title__c, Paper_B__r.Title__c
-            FROM Research_Conflict__c
-            WHERE Research_Map__c = :mapId
-        ];
+        query += 'ORDER BY CreatedDate DESC LIMIT 50';
+        return Database.query(query);
     }
 
     @AuraEnabled(cacheable=true)
@@ -242,8 +241,75 @@ public with sharing class EreunaController {
         return 'SUCCESS';
     }
 
+    @AuraEnabled(cacheable=true)
+    public static List<Research_Paper__c> getAllPapersWithMetrics(String discipline, String searchKey) {
+        String query = 'SELECT Id, Name, Title__c, Authors__c, DOI__c, Publication_Year__c, Venue__c, Abstract__c, ' +
+                       'Citation_Count__c, Open_Access_URL__c, PDF_URL__c, Primary_Discipline__c, ' +
+                       '(SELECT Id, Metric_Name__c, Metric_Value__c, Unit__c, Benchmark_Dataset__c FROM Extracted_Metrics__r ORDER BY CreatedDate DESC) ' +
+                       'FROM Research_Paper__c ';
+        if (String.isNotBlank(discipline) && discipline != 'All') {
+            query += 'WHERE Primary_Discipline__c = :discipline ';
+        }
+        query += 'ORDER BY Citation_Count__c DESC LIMIT 200';
+
+        List<Research_Paper__c> candidates = Database.query(query);
+        if (String.isBlank(searchKey)) {
+            return candidates;
+        }
+
+        String lowerKey = searchKey.trim().toLowerCase();
+        List<Research_Paper__c> filtered = new List<Research_Paper__c>();
+        for (Research_Paper__c p : candidates) {
+            Boolean matches = (p.Title__c != null && p.Title__c.toLowerCase().contains(lowerKey)) ||
+                              (p.Venue__c != null && p.Venue__c.toLowerCase().contains(lowerKey)) ||
+                              (p.Authors__c != null && p.Authors__c.toLowerCase().contains(lowerKey)) ||
+                              (p.Abstract__c != null && p.Abstract__c.toLowerCase().contains(lowerKey));
+            if (matches) {
+                filtered.add(p);
+            }
+        }
+        return filtered;
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static List<Research_Gap__c> getAllGaps(Id mapId) {
+        String query = 'SELECT Id, Name, Problem_Statement__c, Proposed_Experiment__c, Priority__c, ' +
+                       'Estimated_Complexity__c, Status__c, Research_Map__c, Research_Map__r.Topic__c, ' +
+                       'Research_Map__r.Target_Discipline__c ' +
+                       'FROM Research_Gap__c ';
+        if (mapId != null) {
+            query += 'WHERE Research_Map__c = :mapId ';
+        }
+        query += 'ORDER BY Priority__c ASC, CreatedDate DESC LIMIT 100';
+        return Database.query(query);
+    }
+
+    @AuraEnabled
+    public static Research_Gap__c createResearchGap(Id mapId, String problem, String experiment, String priority, String complexity) {
+        if (mapId == null || String.isBlank(problem)) {
+            throw new AuraHandledException('Research Map and Problem Statement are required.');
+        }
+        Research_Gap__c gap = new Research_Gap__c(
+            Research_Map__c = mapId,
+            Problem_Statement__c = problem,
+            Proposed_Experiment__c = experiment,
+            Priority__c = String.isNotBlank(priority) ? priority : 'Medium',
+            Estimated_Complexity__c = String.isNotBlank(complexity) ? complexity : 'Medium',
+            Status__c = 'Identified'
+        );
+        insert gap;
+        return [
+            SELECT Id, Name, Problem_Statement__c, Proposed_Experiment__c, Priority__c, 
+                   Estimated_Complexity__c, Status__c, Research_Map__c, Research_Map__r.Topic__c 
+            FROM Research_Gap__c 
+            WHERE Id = :gap.Id 
+            LIMIT 1
+        ];
+    }
+
     @AuraEnabled
     public static Map<String, Object> initializeSampleData() {
         return EreunaDataService.seedResearchData();
     }
 }
+

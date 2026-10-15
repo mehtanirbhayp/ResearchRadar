@@ -1,132 +1,115 @@
 <template>
-    <div class="slds-p-around_medium dashboard-wrapper">
+    <div class="dashboard-wrapper">
         <!-- Metric KPI Summary Header -->
         <div class="slds-grid slds-wrap slds-gutters slds-m-bottom_medium">
             <div class="slds-col slds-size_1-of-1 slds-medium-size_3-of-12 slds-m-bottom_small">
-                <div class="slds-box kpi-card kpi-blue">
-                    <div class="slds-grid slds-grid_vertical-align-center">
-                        <div>
-                            <span class="kpi-label">RESEARCH MAPS</span>
-                            <h2 class="kpi-value">{totalMapsCount}</h2>
-                        </div>
-                        <div class="slds-col_bump-left">
-                            <lightning-icon icon-name="custom:custom55" size="medium" variant="inverse"></lightning-icon>
-                        </div>
-                    </div>
+                <div class="kpi-card">
+                    <span class="kpi-label">RESEARCH MAPS</span>
+                    <h2 class="kpi-value">{totalMapsCount}</h2>
                 </div>
             </div>
 
             <div class="slds-col slds-size_1-of-1 slds-medium-size_3-of-12 slds-m-bottom_small">
-                <div class="slds-box kpi-card kpi-indigo">
-                    <div class="slds-grid slds-grid_vertical-align-center">
-                        <div>
-                            <span class="kpi-label">CATALOGED PAPERS</span>
-                            <h2 class="kpi-value">{totalPapersCount}</h2>
-                        </div>
-                        <div class="slds-col_bump-left">
-                            <lightning-icon icon-name="custom:custom53" size="medium" variant="inverse"></lightning-icon>
-                        </div>
-                    </div>
+                <div class="kpi-card">
+                    <span class="kpi-label">CATALOGED PAPERS</span>
+                    <h2 class="kpi-value">{totalPapersCount}</h2>
                 </div>
             </div>
 
             <div class="slds-col slds-size_1-of-1 slds-medium-size_3-of-12 slds-m-bottom_small">
-                <div class="slds-box kpi-card kpi-emerald">
-                    <div class="slds-grid slds-grid_vertical-align-center">
-                        <div>
-                            <span class="kpi-label">VERIFIED FINDINGS</span>
-                            <h2 class="kpi-value">{totalFindingsCount}</h2>
-                        </div>
-                        <div class="slds-col_bump-left">
-                            <lightning-icon icon-name="custom:custom62" size="medium" variant="inverse"></lightning-icon>
-                        </div>
-                    </div>
+                <div class="kpi-card">
+                    <span class="kpi-label">VERIFIED FINDINGS</span>
+                    <h2 class="kpi-value">{totalFindingsCount}</h2>
                 </div>
             </div>
 
             <div class="slds-col slds-size_1-of-1 slds-medium-size_3-of-12 slds-m-bottom_small">
-                <div class="slds-box kpi-card kpi-amber">
-                    <div class="slds-grid slds-grid_vertical-align-center">
-                        <div>
-                            <span class="kpi-label">ACTIVE GAPS</span>
-                            <h2 class="kpi-value">{totalGapsCount}</h2>
-                        </div>
-                        <div class="slds-col_bump-left">
-                            <lightning-icon icon-name="custom:custom83" size="medium" variant="inverse"></lightning-icon>
-                        </div>
-                    </div>
+                <div class="kpi-card">
+                    <span class="kpi-label">ACTIVE GAPS</span>
+                    <h2 class="kpi-value">{totalGapsCount}</h2>
                 </div>
             </div>
         </div>
 
-        <!-- Embedded Topic Search Synthesizer -->
-        <div class="slds-m-bottom_large">
-            <c-ereuna-topic-search ondatarefreshed={handleDataRefreshed} onmapcreated={handleDataRefreshed}></c-ereuna-topic-search>
+        <!-- Topic Search and Synthesis Engine -->
+        <div class="slds-m-bottom_medium">
+            <c-ereuna-topic-search onmapsynthesized={handleMapSynthesized}></c-ereuna-topic-search>
         </div>
 
-        <!-- Recent Research Maps List -->
-        <lightning-card title="Recent Research Syntheses" icon-name="standard:dashboard">
-            <div slot="actions">
-                <lightning-button-group>
-                    <lightning-button label="All Disciplines" variant={filterAllVariant} data-disc="All" onclick={handleFilterChange}></lightning-button>
-                    <lightning-button label="Cloud Computing" variant={filterCloudVariant} data-disc="Cloud Computing" onclick={handleFilterChange}></lightning-button>
-                    <lightning-button label="Distributed Systems" variant={filterDistVariant} data-disc="Distributed Systems" onclick={handleFilterChange}></lightning-button>
-                </lightning-button-group>
-            </div>
-
-            <div class="slds-p-around_medium">
-                <template if:true={isLoading}>
-                    <div class="slds-p-around_large slds-text-align_center">
-                        <lightning-spinner alternative-text="Loading maps" size="medium"></lightning-spinner>
-                    </div>
-                </template>
-
-                <template if:false={isLoading}>
-                    <template if:true={hasMaps}>
-                        <div class="slds-table--header-fixed_container">
-                            <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+        <div class="slds-grid slds-wrap slds-gutters">
+            <!-- Left: Quick Topic Navigation -->
+            <div class="slds-col slds-size_1-of-1 slds-large-size_8-of-12 slds-m-bottom_medium">
+                <lightning-card title="Synthesized Research Topics" icon-name="standard:topic">
+                    <div class="slds-p-around_medium">
+                        <template if:true={hasRecentMaps}>
+                            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
                                 <thead>
                                     <tr class="slds-line-height_reset">
-                                        <th scope="col" style="width: 15%;">Map ID</th>
-                                        <th scope="col" style="width: 35%;">Research Topic</th>
-                                        <th scope="col" style="width: 15%;">Discipline</th>
-                                        <th scope="col" style="width: 10%;">Papers</th>
-                                        <th scope="col" style="width: 10%;">Findings</th>
-                                        <th scope="col" style="width: 15%;">Status</th>
+                                        <th scope="col" style="width: 45%;"><div class="slds-truncate" title="Topic">Topic</div></th>
+                                        <th scope="col" style="width: 25%;"><div class="slds-truncate" title="Discipline">Discipline</div></th>
+                                        <th scope="col" style="width: 15%;"><div class="slds-truncate" title="Status">Status</div></th>
+                                        <th scope="col" style="width: 15%;"><div class="slds-truncate" title="Action">Action</div></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <template for:each={mapsList} for:item="map">
-                                        <tr key={map.Id} class="slds-hint-parent clickable-row" onclick={handleNavigateToMap} data-id={map.Id}>
+                                    <template for:each={recentMaps} for:item="map">
+                                        <tr key={map.Id} class="clickable-row">
                                             <td>
-                                                <span class="slds-text-link_reset"><strong>{map.Name}</strong></span>
+                                                <a href="javascript:void(0);" onclick={handleNavigateToMap} data-id={map.Id} class="table-link">
+                                                    {map.Topic__c}
+                                                </a>
                                             </td>
                                             <td>
-                                                <div class="slds-truncate" title={map.Topic__c}><strong>{map.Topic__c}</strong></div>
+                                                <span>{map.Target_Discipline__c}</span>
                                             </td>
                                             <td>
-                                                <span class="slds-badge slds-badge_lightest">{map.Target_Discipline__c}</span>
+                                                <span class="tag-pill-subtle">{map.Status__c}</span>
                                             </td>
-                                            <td>{map.Total_Papers__c}</td>
-                                            <td>{map.Total_Findings__c}</td>
                                             <td>
-                                                <span class={map.statusClass}>{map.Status__c}</span>
+                                                <button class="action-btn" onclick={handleNavigateToMap} data-id={map.Id}>
+                                                    Open Workspace &rarr;
+                                                </button>
                                             </td>
                                         </tr>
                                     </template>
                                 </tbody>
                             </table>
-                        </div>
-                    </template>
-
-                    <template if:false={hasMaps}>
-                        <div class="slds-p-around_large slds-text-align_center slds-box slds-theme_shade">
-                            <p class="slds-text-heading_small">No research maps generated yet.</p>
-                            <p class="slds-text-color_weak slds-m-top_xx-small">Click "Seed Cloud Demo Data" above or enter a research query to create your first map.</p>
-                        </div>
-                    </template>
-                </template>
+                        </template>
+                        <template if:false={hasRecentMaps}>
+                            <div class="empty-state">
+                                <p class="empty-title">No synthesized maps available.</p>
+                                <p class="empty-desc">Use the Literature Synthesis Engine above to create your first research map.</p>
+                            </div>
+                        </template>
+                    </div>
+                </lightning-card>
             </div>
-        </lightning-card>
+
+            <!-- Right: Quick Actions -->
+            <div class="slds-col slds-size_1-of-1 slds-large-size_4-of-12 slds-m-bottom_medium">
+                <lightning-card title="System Operations" icon-name="standard:settings">
+                    <div class="slds-p-around_medium">
+                        <div class="quick-action-list">
+                            <button class="quick-action-item" onclick={handleNavigateToPapers}>
+                                <strong>Research Papers Catalog</strong>
+                                <span>Browse indexed papers &amp; benchmarks</span>
+                            </button>
+                            <button class="quick-action-item" onclick={handleNavigateToGaps}>
+                                <strong>Research Gap Board</strong>
+                                <span>Track validation experiments &amp; protocols</span>
+                            </button>
+                            <button class="quick-action-item" onclick={handleNavigateToMaps}>
+                                <strong>Research Maps Hub</strong>
+                                <span>View all topic syntheses &amp; clusters</span>
+                            </button>
+                            <button class="quick-action-item" onclick={handleNavigateToFindings}>
+                                <strong>Verified Findings &amp; Evidence</strong>
+                                <span>Inspect quotes and confidence scores</span>
+                            </button>
+                        </div>
+                    </div>
+                </lightning-card>
+            </div>
+        </div>
     </div>
 </template>

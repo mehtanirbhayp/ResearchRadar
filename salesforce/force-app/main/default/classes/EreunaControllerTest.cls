@@ -67,4 +67,21 @@ private class EreunaControllerTest {
 
         System.assertEquals('SUCCESS', (String)res.get('status'), 'Initialization should return SUCCESS');
     }
+
+    @isTest
+    static void testGetAllPapersAndGaps() {
+        Research_Map__c rm = [SELECT Id FROM Research_Map__c LIMIT 1];
+
+        Test.startTest();
+        List<Research_Paper__c> papers = EreunaController.getAllPapersWithMetrics('All', 'Serverless');
+        List<Research_Gap__c> allGaps = EreunaController.getAllGaps(null);
+        List<Research_Gap__c> mapGaps = EreunaController.getAllGaps(rm.Id);
+        Research_Gap__c newGap = EreunaController.createResearchGap(rm.Id, 'Test Problem Statement', 'Test Experiment', 'High', 'Low');
+        Test.stopTest();
+
+        System.assertNotEquals(null, papers, 'Papers should not be null');
+        System.assertNotEquals(null, allGaps, 'All gaps should not be null');
+        System.assertNotEquals(null, newGap, 'New gap should be created');
+        System.assertEquals('Test Problem Statement', newGap.Problem_Statement__c, 'Problem statement match');
+    }
 }

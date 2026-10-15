@@ -1,0 +1,236 @@
+<template>
+    <div class="explorer-container">
+        <!-- Clean Minimalist Header -->
+        <header class="explorer-header">
+            <div class="slds-grid slds-grid_vertical-align-center slds-wrap">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_8-of-12">
+                    <h1 class="page-title">Research Papers</h1>
+                    <p class="page-subtitle">
+                        Peer-reviewed publications, empirical benchmarks, and citations.
+                    </p>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-text-align_right slds-m-top_small-only">
+                    <span class="count-badge">
+                        {totalCountLabel}
+                    </span>
+                    <lightning-button label="Refresh" variant="neutral" onclick={handleRefresh} class="slds-m-left_small"></lightning-button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Filter & Control Toolbar -->
+        <div class="toolbar-row slds-m-bottom_medium">
+            <div class="slds-grid slds-wrap slds-gutters slds-grid_vertical-align-center">
+                <!-- Search Input -->
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_5-of-12 slds-m-bottom_small">
+                    <lightning-input
+                        type="search"
+                        placeholder="Search by title, authors, venue, or abstract..."
+                        value={searchKey}
+                        onchange={handleSearchChange}
+                        variant="label-hidden">
+                    </lightning-input>
+                </div>
+
+                <!-- Discipline Filter Buttons -->
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-m-bottom_small">
+                    <lightning-button-group>
+                        <lightning-button label="All Disciplines" variant={allVariant} data-disc="All" onclick={handleDisciplineClick}></lightning-button>
+                        <lightning-button label="Cloud Computing" variant={cloudVariant} data-disc="Cloud Computing" onclick={handleDisciplineClick}></lightning-button>
+                        <lightning-button label="Distributed Systems" variant={distVariant} data-disc="Distributed Systems" onclick={handleDisciplineClick}></lightning-button>
+                    </lightning-button-group>
+                </div>
+
+                <!-- View Toggle Buttons -->
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_3-of-12 slds-m-bottom_small slds-text-align_right">
+                    <lightning-button-icon
+                        icon-name="utility:apps"
+                        variant={cardViewVariant}
+                        alternative-text="Card View"
+                        title="Card View"
+                        onclick={switchToCardView}
+                        class="slds-m-right_xx-small">
+                    </lightning-button-icon>
+                    <lightning-button-icon
+                        icon-name="utility:table"
+                        variant={tableViewVariant}
+                        alternative-text="Table View"
+                        title="Table View"
+                        onclick={switchToTableView}>
+                    </lightning-button-icon>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <template if:true={isLoading}>
+            <div class="slds-p-around_xx-large slds-text-align_center">
+                <lightning-spinner alternative-text="Loading research papers" size="medium"></lightning-spinner>
+            </div>
+        </template>
+
+        <!-- Main Content Area -->
+        <template if:false={isLoading}>
+            <!-- CARD VIEW -->
+            <template if:true={isCardView}>
+                <template if:true={hasPapers}>
+                    <div class="slds-grid slds-wrap slds-gutters">
+                        <template for:each={filteredPapers} for:item="paper">
+                            <div key={paper.Id} class="slds-col slds-size_1-of-1 slds-large-size_1-of-2 slds-m-bottom_medium">
+                                <article class="paper-card">
+                                    <!-- Card Header Badges -->
+                                    <div class="card-meta-row">
+                                        <span class="tag-pill">{paper.Venue__c}</span>
+                                        <span class="tag-pill-subtle">{paper.Publication_Year__c}</span>
+                                        <span class="tag-pill-subtle">{paper.Primary_Discipline__c}</span>
+                                        <span class="citation-badge">
+                                            <strong>{paper.Citation_Count__c}</strong> citations
+                                        </span>
+                                    </div>
+
+                                    <!-- Paper Title -->
+                                    <h2 class="paper-title" onclick={handleNavigateToPaper} data-id={paper.Id} title="Click to view Salesforce record">
+                                        {paper.Title__c}
+                                    </h2>
+
+                                    <!-- Authors -->
+                                    <p class="paper-authors">
+                                        {paper.Authors__c}
+                                    </p>
+
+                                    <!-- Abstract Accordion -->
+                                    <div class="abstract-box">
+                                        <p class={paper.abstractClass}>
+                                            {paper.Abstract__c}
+                                        </p>
+                                        <button class="expand-btn" onclick={toggleAbstract} data-id={paper.Id}>
+                                            {paper.expandLabel}
+                                        </button>
+                                    </div>
+
+                                    <!-- Extracted Empirical Metrics Pills -->
+                                    <template if:true={paper.hasMetrics}>
+                                        <div class="metrics-section">
+                                            <span class="metrics-header-label">Extracted Benchmarks:</span>
+                                            <div class="metrics-pill-wrap">
+                                                <template for:each={paper.metricsList} for:item="m">
+                                                    <span key={m.Id} class="metric-pill" title={m.Benchmark_Dataset__c}>
+                                                        <strong>{m.Metric_Name__c}:</strong> {m.Metric_Value__c} {m.Unit__c}
+                                                    </span>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </template>
+
+                                    <!-- Footer Actions -->
+                                    <div class="card-footer">
+                                        <div class="action-buttons">
+                                            <template if:true={paper.PDF_URL__c}>
+                                                <a href={paper.PDF_URL__c} target="_blank" rel="noopener noreferrer" class="action-btn">
+                                                    PDF
+                                                </a>
+                                            </template>
+                                            <template if:true={paper.doiUrl}>
+                                                <a href={paper.doiUrl} target="_blank" rel="noopener noreferrer" class="action-btn">
+                                                    DOI
+                                                </a>
+                                            </template>
+                                            <button class="action-btn" onclick={handleCopyBibtex} data-id={paper.Id}>
+                                                BibTeX
+                                            </button>
+                                            <button class="action-btn-black slds-col_bump-left" onclick={handleNavigateToPaper} data-id={paper.Id}>
+                                                Details &rarr;
+                                            </button>
+                                        </div>
+                                    </div>
+                                </article>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+
+                <!-- Empty State -->
+                <template if:false={hasPapers}>
+                    <div class="empty-state">
+                        <p class="empty-title">No Papers Found</p>
+                        <p class="empty-desc">No publications match your current filter criteria.</p>
+                        <lightning-button label="Clear Filters" variant="neutral" onclick={handleResetFilters} class="slds-m-top_small"></lightning-button>
+                    </div>
+                </template>
+            </template>
+
+            <!-- TABLE VIEW -->
+            <template if:false={isCardView}>
+                <div class="table-container">
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th scope="col" style="width: 40%;"><div class="slds-truncate" title="Title">Title &amp; Authors</div></th>
+                                <th scope="col" style="width: 15%;"><div class="slds-truncate" title="Venue / Year">Venue / Year</div></th>
+                                <th scope="col" style="width: 15%;"><div class="slds-truncate" title="Discipline">Discipline</div></th>
+                                <th scope="col" style="width: 12%;"><div class="slds-truncate" title="Citations">Citations</div></th>
+                                <th scope="col" style="width: 18%;"><div class="slds-truncate" title="Actions">Actions</div></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={filteredPapers} for:item="paper">
+                                <tr key={paper.Id} class="clickable-row">
+                                    <td>
+                                        <a href="javascript:void(0);" onclick={handleNavigateToPaper} data-id={paper.Id} class="table-link">
+                                            {paper.Title__c}
+                                        </a>
+                                        <p class="slds-text-body_small slds-text-color_weak">{paper.Authors__c}</p>
+                                    </td>
+                                    <td>
+                                        <div>{paper.Venue__c}</div>
+                                        <div class="slds-text-body_small slds-text-color_weak">{paper.Publication_Year__c}</div>
+                                    </td>
+                                    <td>
+                                        <span>{paper.Primary_Discipline__c}</span>
+                                    </td>
+                                    <td>
+                                        <span class="citation-badge-sm">
+                                            {paper.Citation_Count__c}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <button class="action-btn" onclick={handleCopyBibtex} data-id={paper.Id}>
+                                            BibTeX
+                                        </button>
+                                        <template if:true={paper.PDF_URL__c}>
+                                            <a href={paper.PDF_URL__c} target="_blank" rel="noopener noreferrer" class="action-btn slds-m-left_xx-small">
+                                                PDF
+                                            </a>
+                                        </template>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </template>
+        </template>
+
+        <!-- BibTeX Modal -->
+        <template if:true={isBibtexModalOpen}>
+            <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_medium">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header modal-header">
+                        <button class="slds-button slds-button_icon slds-modal__close" onclick={closeBibtexModal}>
+                            <lightning-icon icon-name="utility:close" size="small"></lightning-icon>
+                        </button>
+                        <h2 class="modal-title">BibTeX Citation Reference</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium">
+                        <pre class="bibtex-code-block">{selectedBibtex}</pre>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <lightning-button label="Close" onclick={closeBibtexModal} class="slds-m-right_small"></lightning-button>
+                        <lightning-button label="Copy to Clipboard" variant="brand" onclick={copyBibtexToClipboard} class="black-btn"></lightning-button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+    </div>
+</template>

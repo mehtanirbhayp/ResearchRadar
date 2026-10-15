@@ -1,31 +1,70 @@
+:host {
+    display: block;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #111111;
+    --sds-c-progress-bar-color-background-fill: #000000;
+}
+
 .table-container {
     overflow-x: auto;
 }
 
 .paper-title-cell strong {
-    color: #0b1f3a;
+    color: #000000;
     font-size: 0.95rem;
 }
 
 .paper-title-cell strong:hover {
-    color: #0176d3;
+    color: #000000;
     text-decoration: underline;
 }
 
 .citation-pill {
     display: inline-flex;
     align-items: center;
-    background-color: #f0fdf4;
-    color: #166534;
-    border: 1px solid #bbf7d0;
-    padding: 2px 8px;
-    border-radius: 12px;
+    background-color: #ffffff;
+    color: #111111;
+    border: 1px solid #111111;
+    padding: 1px 6px;
+    border-radius: 2px;
+    font-size: 0.72rem;
     font-weight: 600;
 }
 
 .custom-link-btn {
-    font-size: 0.75rem;
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
     padding: 2px 8px;
     height: auto;
     line-height: 1.5;
+    border: 1px solid #111111;
+    color: #111111;
+    background: #ffffff;
+    text-decoration: none;
+    border-radius: 2px;
+}
+
+.custom-link-btn:hover {
+    background: #111111;
+    color: #ffffff;
+}
+
+.empty-state {
+    padding: 2.5rem 1rem;
+    text-align: center;
+    border: 1px dashed #cccccc;
+    border-radius: 2px;
+}
+
+.empty-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #000000;
+}
+
+.empty-desc {
+    font-size: 0.8rem;
+    color: #666666;
+    margin-top: 0.25rem;
 }

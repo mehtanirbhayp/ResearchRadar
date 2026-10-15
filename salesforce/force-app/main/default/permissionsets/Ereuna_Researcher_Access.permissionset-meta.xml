@@ -284,6 +284,22 @@
         <visibility>Visible</visibility>
     </tabSettings>
     <tabSettings>
+        <tab>Paper_Explorer</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>Gap_Board</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>Research_Map_Hub</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>Findings_Explorer</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
         <tab>Research_Conflict__c</tab>
         <visibility>Visible</visibility>
     </tabSettings>

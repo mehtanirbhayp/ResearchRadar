@@ -30,14 +30,13 @@ This manual provides an exhaustive, step-by-step reference for **every single fu
 4. Click on **`Ereuna Research Radar`**.
 
 ### Step 2: Verifying Your Navigation Tabs
-Once opened, you will see the unified navigation bar featuring:
-- **Radar Dashboard**: Executive KPI command center & topic synthesizer.
-- **Research Maps**: Systematic literature review clusters.
-- **Research Papers**: Comprehensive academic paper repository.
-- **Research Findings**: Verifiable claims backed by exact textual quotes.
-- **Research Gaps**: Open research questions and proposed empirical experiments.
-- **Research Conflicts**: Contradictions and debates between published findings.
-- **Reports & Dashboards**: Standard Salesforce analytics engines.
+Once opened, you will see the unified navigation bar featuring dedicated, 100% interactive Lightning Web Component experiences — zero plain tables:
+- **Radar Dashboard**: Executive KPI command center & topic synthesizer (`Ereuna_Home`).
+- **Research Maps**: Visual card hub for synthesized literature clusters with status badges, roll-up metrics, 1-click **Launch Workspace**, and **+ Synthesize New Topic** modal (`Research_Map_Hub`).
+- **Research Papers**: Visual academic publication card catalog with fire citation badges (`🔥 485 Citations`), extracted benchmark metric pills, abstract accordions, and 1-click PDF / DOI / BibTeX modal (`Paper_Explorer`).
+- **Research Gaps**: Interactive 4-stage Kanban board tracking research gaps through validation stages with live stage moves and "+ Propose New Experiment" modal (`Gap_Board`).
+- **Research Findings**: Empirical evidence cards featuring verbatim literature quotations, confidence percentage badges, and source publication page/section citations (`Findings_Explorer`).
+- **Reports & Dashboards**: Standard Salesforce operational analytics and custom report builders.
 
 ---
 

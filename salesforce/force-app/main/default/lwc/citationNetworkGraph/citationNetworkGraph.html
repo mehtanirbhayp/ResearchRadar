@@ -26,9 +26,9 @@
                                             y1={link.y1}
                                             x2={link.x2}
                                             y2={link.y2}
-                                            stroke="#64748b"
-                                            stroke-width="2"
-                                            stroke-opacity="0.6">
+                                            stroke="#bbbbbb"
+                                            stroke-width="1.5"
+                                            stroke-opacity="0.8">
                                         </line>
                                     </template>
 
@@ -66,24 +66,24 @@
                         <!-- Node Detail Inspector Drawer -->
                         <div class="slds-col slds-size_4-of-12">
                             <template if:true={selectedNode}>
-                                <div class="slds-box slds-theme_shade detail-panel">
-                                    <span class="slds-badge slds-theme_info slds-m-bottom_x-small">{selectedNode.discipline}</span>
-                                    <h3 class="slds-text-heading_small slds-m-bottom_x-small"><strong>{selectedNode.label}</strong></h3>
-                                    <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_small">
+                                <div class="detail-panel">
+                                    <span class="tag-pill">{selectedNode.discipline}</span>
+                                    <h3 class="node-title"><strong>{selectedNode.label}</strong></h3>
+                                    <p class="node-authors">
                                         <strong>Authors:</strong> {selectedNode.authors}
                                     </p>
                                     <div class="slds-grid slds-gutters slds-m-bottom_small">
                                         <div class="slds-col">
-                                            <span class="slds-text-title">Year:</span>
-                                            <div class="slds-text-body_regular">{selectedNode.year}</div>
+                                            <span class="meta-label">Year:</span>
+                                            <div class="meta-val">{selectedNode.year}</div>
                                         </div>
                                         <div class="slds-col">
-                                            <span class="slds-text-title">Citations:</span>
-                                            <div class="slds-text-body_regular">{selectedNode.citations}</div>
+                                            <span class="meta-label">Citations:</span>
+                                            <div class="meta-val">{selectedNode.citations}</div>
                                         </div>
                                     </div>
                                     <template if:true={selectedNode.url}>
-                                        <a href={selectedNode.url} target="_blank" rel="noopener noreferrer" class="slds-button slds-button_brand slds-button_stretch slds-m-top_small">
+                                        <a href={selectedNode.url} target="_blank" rel="noopener noreferrer" class="black-action-btn">
                                             Open Research Article
                                         </a>
                                     </template>
@@ -91,10 +91,9 @@
                             </template>
 
                             <template if:false={selectedNode}>
-                                <div class="slds-box slds-theme_shade slds-text-align_center slds-p-around_large">
-                                    <lightning-icon icon-name="utility:touch_action" size="medium" class="slds-m-bottom_small"></lightning-icon>
-                                    <p class="slds-text-heading_small">Select a Paper Node</p>
-                                    <p class="slds-text-color_weak slds-m-top_xx-small">Click any node circle in the graph to view citation metadata and open-access links.</p>
+                                <div class="empty-panel">
+                                    <p class="empty-title">Select a Paper Node</p>
+                                    <p class="empty-desc">Click any node circle in the graph to view citation metadata and open-access links.</p>
                                 </div>
                             </template>
                         </div>
@@ -102,10 +101,9 @@
                 </template>
 
                 <template if:false={hasGraphData}>
-                    <div class="slds-p-around_large slds-text-align_center slds-box slds-theme_shade">
-                        <lightning-icon icon-name="utility:graph" size="large" class="slds-m-bottom_small"></lightning-icon>
-                        <p class="slds-text-heading_small">No Citation Network Available</p>
-                        <p class="slds-text-color_weak slds-m-top_xx-small">Link at least 2 papers to this Research Map to visualize citation relationships.</p>
+                    <div class="empty-panel">
+                        <p class="empty-title">No Citation Network Available</p>
+                        <p class="empty-desc">Link at least 2 papers to this Research Map to visualize citation relationships.</p>
                     </div>
                 </template>
             </template>

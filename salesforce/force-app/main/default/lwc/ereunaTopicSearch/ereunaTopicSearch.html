@@ -1,17 +1,16 @@
 <template>
     <lightning-card title="Ereuna Literature Synthesis Engine" icon-name="custom:custom55">
         <div class="slds-p-around_medium container">
-            <div class="header-banner slds-p-around_medium slds-m-bottom_medium">
-                <div class="slds-grid slds-grid_vertical-align-center">
-                    <div class="slds-col">
-                        <h2 class="title">Research, on your radar.</h2>
-                        <p class="subtitle">Turn any cloud computing or computer science topic into an evidence-verified research map.</p>
+            <div class="search-header slds-m-bottom_medium">
+                <div class="slds-grid slds-grid_vertical-align-center slds-wrap">
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_8-of-12">
+                        <h2 class="title">Literature Synthesis Engine</h2>
+                        <p class="subtitle">Enter any research topic to synthesize an evidence-backed literature map.</p>
                     </div>
-                    <div class="slds-col_bump-left">
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-text-align_right slds-m-top_small-only">
                         <lightning-button
                             variant="neutral"
-                            label="Seed Cloud Demo Data"
-                            icon-name="utility:database"
+                            label="Re-Seed Demo Data"
                             onclick={handleSeedDemoData}
                             disabled={isLoading}>
                         </lightning-button>
@@ -57,7 +56,7 @@
 
             <!-- Pipeline Progress Tracker -->
             <template if:true={isLoading}>
-                <div class="pipeline-tracker slds-box slds-theme_shade slds-p-around_medium slds-m-bottom_medium">
+                <div class="pipeline-tracker slds-p-around_medium slds-m-bottom_medium">
                     <h3 class="slds-text-heading_small slds-m-bottom_small">
                         <lightning-icon icon-name="utility:sync" size="x-small" class="spinning-icon slds-m-right_x-small"></lightning-icon>
                         Autonomous Synthesis Pipeline Running...

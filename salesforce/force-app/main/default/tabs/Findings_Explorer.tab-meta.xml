@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Interactive visual explorer for verified empirical claims, verbatim quotations, and confidence scores</description>
+    <flexiPage>Findings_Explorer</flexiPage>
+    <label>Research Findings</label>
+    <motif>Custom62: Chalkboard</motif>
+</CustomTab>

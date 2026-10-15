@@ -1,7 +1,7 @@
 <template>
     <lightning-card title="Open Research Gaps &amp; Proposed Experiments" icon-name="custom:custom83">
         <div slot="actions">
-            <lightning-button label="Refresh" icon-name="utility:refresh" onclick={handleRefresh}></lightning-button>
+            <lightning-button label="Refresh" onclick={handleRefresh}></lightning-button>
         </div>
 
         <div class="slds-p-around_medium">
@@ -16,32 +16,27 @@
                     <div class="slds-grid slds-wrap slds-gutters">
                         <template for:each={gapCards} for:item="gap">
                             <div key={gap.Id} class="slds-col slds-size_1-of-1 slds-large-size_1-of-2 slds-m-bottom_medium">
-                                <div class="slds-box gap-card">
-                                    <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_x-small">
-                                        <div>
-                                            <span class={gap.priorityBadgeClass}>{gap.Priority__c} Priority</span>
-                                            <span class="slds-badge slds-badge_lightest slds-m-left_xx-small">{gap.Estimated_Complexity__c} Complexity</span>
-                                        </div>
-                                        <div class="slds-col_bump-left">
-                                            <span class="status-indicator">{gap.Status__c}</span>
-                                        </div>
+                                <article class="gap-card">
+                                    <div class="card-meta-row">
+                                        <span class="tag-pill">{gap.Priority__c}</span>
+                                        <span class="complexity-pill">{gap.Estimated_Complexity__c} Complexity</span>
+                                        <span class="status-indicator">{gap.Status__c}</span>
                                     </div>
 
-                                    <h4 class="slds-text-heading_small problem-text">
+                                    <h4 class="problem-text">
                                         <strong>{gap.Problem_Statement__c}</strong>
                                     </h4>
 
-                                    <div class="experiment-box slds-m-vertical_small slds-p-around_small">
-                                        <p class="slds-text-title_bold slds-text-color_weak slds-m-bottom_xx-small">
-                                            <lightning-icon icon-name="utility:experiment" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
+                                    <div class="experiment-box">
+                                        <p class="experiment-label">
                                             Suggested Experimental Methodology:
                                         </p>
-                                        <p class="slds-text-body_regular">{gap.Proposed_Experiment__c}</p>
+                                        <p class="experiment-desc">{gap.Proposed_Experiment__c}</p>
                                     </div>
 
                                     <!-- Quick Status Transition Action -->
-                                    <div class="slds-grid slds-grid_vertical-align-center slds-m-top_small action-bar">
-                                        <span class="slds-text-body_small slds-text-color_weak">Transition Status:</span>
+                                    <div class="action-bar">
+                                        <span class="action-label">Status:</span>
                                         <lightning-button-group class="slds-m-left_small">
                                             <lightning-button
                                                 label="In Review"
@@ -52,7 +47,7 @@
                                                 disabled={gap.isInReview}>
                                             </lightning-button>
                                             <lightning-button
-                                                label="Experiment Drafted"
+                                                label="Drafted"
                                                 variant="neutral"
                                                 data-id={gap.Id}
                                                 data-status="Experiment Drafted"
@@ -65,21 +60,21 @@
                                                 data-id={gap.Id}
                                                 data-status="Addressed"
                                                 onclick={handleStatusChange}
-                                                disabled={gap.isAddressed}>
+                                                disabled={gap.isAddressed}
+                                                class="black-btn">
                                             </lightning-button>
                                         </lightning-button-group>
                                     </div>
-                                </div>
+                                </article>
                             </div>
                         </template>
                     </div>
                 </template>
 
                 <template if:false={hasGaps}>
-                    <div class="slds-p-around_large slds-text-align_center slds-box slds-theme_shade">
-                        <lightning-icon icon-name="utility:light_bulb" size="large" class="slds-m-bottom_small"></lightning-icon>
-                        <p class="slds-text-heading_small">No Research Gaps Identified</p>
-                        <p class="slds-text-color_weak slds-m-top_xx-small">This topic map currently has no unresolved gaps or proposed experiments recorded.</p>
+                    <div class="empty-state">
+                        <p class="empty-title">No Research Gaps Identified</p>
+                        <p class="empty-desc">This topic map currently has no unresolved gaps or proposed experiments recorded.</p>
                     </div>
                 </template>
             </template>

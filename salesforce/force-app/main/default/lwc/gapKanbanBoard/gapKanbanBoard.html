@@ -1,0 +1,278 @@
+<template>
+    <div class="kanban-container">
+        <!-- Clean Header -->
+        <header class="kanban-header">
+            <div class="slds-grid slds-grid_vertical-align-center slds-wrap">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_8-of-12">
+                    <h1 class="page-title">Research Gaps &amp; Experiments</h1>
+                    <p class="page-subtitle">
+                        Unresolved academic challenges and experimental validation tracker.
+                    </p>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-text-align_right slds-m-top_small-only">
+                    <lightning-button
+                        label="Propose New Experiment"
+                        variant="brand"
+                        onclick={openCreateModal}
+                        class="black-btn">
+                    </lightning-button>
+                    <lightning-button
+                        label="Refresh"
+                        variant="neutral"
+                        onclick={handleRefresh}
+                        class="slds-m-left_small">
+                    </lightning-button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Filter Controls -->
+        <div class="toolbar-row slds-m-bottom_medium">
+            <div class="slds-grid slds-wrap slds-gutters slds-grid_vertical-align-center">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12">
+                    <lightning-combobox
+                        name="mapFilter"
+                        value={selectedMapId}
+                        options={mapOptions}
+                        onchange={handleMapFilterChange}
+                        placeholder="All Research Topics"
+                        variant="label-hidden">
+                    </lightning-combobox>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-text-align_right slds-m-top_small-only">
+                    <span class="count-badge">
+                        {totalGapsCount} Research Challenges
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Spinner -->
+        <template if:true={isLoading}>
+            <div class="slds-p-around_xx-large slds-text-align_center">
+                <lightning-spinner alternative-text="Loading Kanban board" size="medium"></lightning-spinner>
+            </div>
+        </template>
+
+        <!-- KANBAN BOARD 4 COLUMNS -->
+        <template if:false={isLoading}>
+            <div class="slds-grid slds-wrap slds-gutters kanban-board">
+                <!-- COLUMN 1: Identified -->
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_3-of-12 slds-m-bottom_medium">
+                    <div class="kanban-column">
+                        <div class="column-header">
+                            <span class="column-title">Identified</span>
+                            <span class="column-count">{identifiedList.length}</span>
+                        </div>
+                        <div class="column-body">
+                            <template for:each={identifiedList} for:item="gap">
+                                <article key={gap.Id} class="gap-card slds-m-bottom_small">
+                                    <div class="card-meta-row">
+                                        <span class="tag-pill">{gap.Priority__c}</span>
+                                        <span class="complexity-text">{gap.Estimated_Complexity__c}</span>
+                                    </div>
+                                    <p class="topic-tag">{gap.topicTitle}</p>
+                                    <h3 class="problem-text">{gap.Problem_Statement__c}</h3>
+                                    
+                                    <div class="experiment-preview">
+                                        <span class="exp-label">Proposed Experiment:</span>
+                                        <p class="exp-text">{gap.Proposed_Experiment__c}</p>
+                                    </div>
+
+                                    <div class="card-actions">
+                                        <button class="stage-btn slds-col_bump-left" data-id={gap.Id} data-target="In Review" onclick={handleMoveStage}>
+                                            In Review &rarr;
+                                        </button>
+                                    </div>
+                                </article>
+                            </template>
+                            <template if:true={isIdentifiedEmpty}>
+                                <div class="empty-column-msg">No items in this stage</div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COLUMN 2: In Review -->
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_3-of-12 slds-m-bottom_medium">
+                    <div class="kanban-column">
+                        <div class="column-header">
+                            <span class="column-title">In Review</span>
+                            <span class="column-count">{inReviewList.length}</span>
+                        </div>
+                        <div class="column-body">
+                            <template for:each={inReviewList} for:item="gap">
+                                <article key={gap.Id} class="gap-card slds-m-bottom_small">
+                                    <div class="card-meta-row">
+                                        <span class="tag-pill">{gap.Priority__c}</span>
+                                        <span class="complexity-text">{gap.Estimated_Complexity__c}</span>
+                                    </div>
+                                    <p class="topic-tag">{gap.topicTitle}</p>
+                                    <h3 class="problem-text">{gap.Problem_Statement__c}</h3>
+                                    
+                                    <div class="experiment-preview">
+                                        <span class="exp-label">Proposed Experiment:</span>
+                                        <p class="exp-text">{gap.Proposed_Experiment__c}</p>
+                                    </div>
+
+                                    <div class="card-actions">
+                                        <button class="stage-btn-subtle" data-id={gap.Id} data-target="Identified" onclick={handleMoveStage}>
+                                            &larr; Back
+                                        </button>
+                                        <button class="stage-btn slds-col_bump-left" data-id={gap.Id} data-target="Experiment Drafted" onclick={handleMoveStage}>
+                                            Draft &rarr;
+                                        </button>
+                                    </div>
+                                </article>
+                            </template>
+                            <template if:true={isInReviewEmpty}>
+                                <div class="empty-column-msg">No items in this stage</div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COLUMN 3: Experiment Drafted -->
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_3-of-12 slds-m-bottom_medium">
+                    <div class="kanban-column">
+                        <div class="column-header">
+                            <span class="column-title">Experiment Drafted</span>
+                            <span class="column-count">{draftedList.length}</span>
+                        </div>
+                        <div class="column-body">
+                            <template for:each={draftedList} for:item="gap">
+                                <article key={gap.Id} class="gap-card slds-m-bottom_small">
+                                    <div class="card-meta-row">
+                                        <span class="tag-pill">{gap.Priority__c}</span>
+                                        <span class="complexity-text">{gap.Estimated_Complexity__c}</span>
+                                    </div>
+                                    <p class="topic-tag">{gap.topicTitle}</p>
+                                    <h3 class="problem-text">{gap.Problem_Statement__c}</h3>
+                                    
+                                    <div class="experiment-preview active-protocol">
+                                        <span class="exp-label">Protocol:</span>
+                                        <p class="exp-text">{gap.Proposed_Experiment__c}</p>
+                                    </div>
+
+                                    <div class="card-actions">
+                                        <button class="stage-btn-subtle" data-id={gap.Id} data-target="In Review" onclick={handleMoveStage}>
+                                            &larr; Back
+                                        </button>
+                                        <button class="stage-btn-black slds-col_bump-left" data-id={gap.Id} data-target="Addressed" onclick={handleMoveStage}>
+                                            Mark Addressed &check;
+                                        </button>
+                                    </div>
+                                </article>
+                            </template>
+                            <template if:true={isDraftedEmpty}>
+                                <div class="empty-column-msg">No items in this stage</div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COLUMN 4: Addressed -->
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_3-of-12 slds-m-bottom_medium">
+                    <div class="kanban-column">
+                        <div class="column-header">
+                            <span class="column-title">Addressed</span>
+                            <span class="column-count">{addressedList.length}</span>
+                        </div>
+                        <div class="column-body">
+                            <template for:each={addressedList} for:item="gap">
+                                <article key={gap.Id} class="gap-card slds-m-bottom_small resolved-card">
+                                    <div class="card-meta-row">
+                                        <span class="tag-pill-dark">Resolved</span>
+                                        <span class="complexity-text">{gap.Estimated_Complexity__c}</span>
+                                    </div>
+                                    <p class="topic-tag">{gap.topicTitle}</p>
+                                    <h3 class="problem-text">{gap.Problem_Statement__c}</h3>
+                                    
+                                    <div class="experiment-preview">
+                                        <span class="exp-label">Validated Experiment:</span>
+                                        <p class="exp-text">{gap.Proposed_Experiment__c}</p>
+                                    </div>
+
+                                    <div class="card-actions">
+                                        <button class="stage-btn-subtle" data-id={gap.Id} data-target="Experiment Drafted" onclick={handleMoveStage}>
+                                            &larr; Reopen
+                                        </button>
+                                    </div>
+                                </article>
+                            </template>
+                            <template if:true={isAddressedEmpty}>
+                                <div class="empty-column-msg">No items resolved</div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!-- New Experiment Modal -->
+        <template if:true={isModalOpen}>
+            <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_medium">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header modal-header">
+                        <button class="slds-button slds-button_icon slds-modal__close" onclick={closeCreateModal}>
+                            <lightning-icon icon-name="utility:close" size="small"></lightning-icon>
+                        </button>
+                        <h2 class="modal-title">Propose Research Experiment</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium">
+                        <lightning-combobox
+                            label="Target Research Map"
+                            required
+                            value={newMapId}
+                            options={modalMapOptions}
+                            onchange={handleNewMapChange}
+                            class="slds-m-bottom_small">
+                        </lightning-combobox>
+
+                        <lightning-textarea
+                            label="Problem Statement &amp; Gap Hypothesis"
+                            required
+                            placeholder="Detail the unanswered scientific question or performance bottleneck..."
+                            value={newProblem}
+                            onchange={handleNewProblemChange}
+                            class="slds-m-bottom_small">
+                        </lightning-textarea>
+
+                        <lightning-textarea
+                            label="Proposed Experimental Methodology"
+                            required
+                            placeholder="Detail the benchmark dataset, workloads, and measurement metrics to validate..."
+                            value={newExperiment}
+                            onchange={handleNewExperimentChange}
+                            class="slds-m-bottom_small">
+                        </lightning-textarea>
+
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-combobox
+                                    label="Priority"
+                                    value={newPriority}
+                                    options={priorityOptions}
+                                    onchange={handleNewPriorityChange}>
+                                </lightning-combobox>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-combobox
+                                    label="Estimated Complexity"
+                                    value={newComplexity}
+                                    options={complexityOptions}
+                                    onchange={handleNewComplexityChange}>
+                                </lightning-combobox>
+                            </div>
+                        </div>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <lightning-button label="Cancel" onclick={closeCreateModal} class="slds-m-right_small"></lightning-button>
+                        <lightning-button label="Submit Experiment" variant="brand" onclick={handleCreateSubmit} disabled={isSubmitting} class="black-btn"></lightning-button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+    </div>
+</template>

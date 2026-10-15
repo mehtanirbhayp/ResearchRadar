@@ -1,0 +1,158 @@
+<template>
+    <div class="explorer-container">
+        <!-- Clean Header -->
+        <header class="explorer-header">
+            <div class="slds-grid slds-grid_vertical-align-center slds-wrap">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_8-of-12">
+                    <h1 class="page-title">Research Maps</h1>
+                    <p class="page-subtitle">
+                        Synthesized academic literature clusters and systematic reviews.
+                    </p>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-text-align_right slds-m-top_small-only">
+                    <lightning-button
+                        label="Synthesize New Topic"
+                        variant="brand"
+                        onclick={openSynthesizeModal}
+                        class="black-btn">
+                    </lightning-button>
+                    <lightning-button
+                        label="Refresh"
+                        variant="neutral"
+                        onclick={handleRefresh}
+                        class="slds-m-left_small">
+                    </lightning-button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Clean Toolbar -->
+        <div class="toolbar-row slds-m-bottom_medium">
+            <div class="slds-grid slds-wrap slds-gutters slds-grid_vertical-align-center">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-m-bottom_small">
+                    <lightning-input
+                        type="search"
+                        placeholder="Search maps by topic keywords or synthesis summary..."
+                        value={searchKey}
+                        onchange={handleSearchChange}
+                        variant="label-hidden">
+                    </lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-m-bottom_small slds-text-align_right">
+                    <lightning-button-group>
+                        <lightning-button label="All Disciplines" variant={allVariant} data-disc="All" onclick={handleDisciplineClick}></lightning-button>
+                        <lightning-button label="Cloud Computing" variant={cloudVariant} data-disc="Cloud Computing" onclick={handleDisciplineClick}></lightning-button>
+                        <lightning-button label="Distributed Systems" variant={distVariant} data-disc="Distributed Systems" onclick={handleDisciplineClick}></lightning-button>
+                    </lightning-button-group>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Spinner -->
+        <template if:true={isLoading}>
+            <div class="slds-p-around_xx-large slds-text-align_center">
+                <lightning-spinner alternative-text="Loading research maps" size="medium"></lightning-spinner>
+            </div>
+        </template>
+
+        <!-- Map Cards Grid -->
+        <template if:false={isLoading}>
+            <template if:true={hasMaps}>
+                <div class="slds-grid slds-wrap slds-gutters">
+                    <template for:each={filteredMaps} for:item="map">
+                        <div key={map.Id} class="slds-col slds-size_1-of-1 slds-large-size_1-of-2 slds-m-bottom_medium">
+                            <article class="map-card">
+                                <!-- Card Header -->
+                                <div class="card-meta-row">
+                                    <span class="tag-pill">{map.Target_Discipline__c}</span>
+                                    <span class="tag-pill-subtle">{map.Status__c}</span>
+                                    <span class="map-id">{map.Name}</span>
+                                </div>
+
+                                <!-- Topic Title -->
+                                <h2 class="card-title" onclick={handleLaunchWorkspace} data-id={map.Id}>
+                                    {map.Topic__c}
+                                </h2>
+
+                                <!-- Summary Body -->
+                                <p class="card-summary">{map.Synthesis_Summary__c}</p>
+
+                                <!-- Metrics Row -->
+                                <div class="metrics-row">
+                                    <span><strong>{map.Total_Papers__c}</strong> Papers</span>
+                                    <span class="sep">&bull;</span>
+                                    <span><strong>{map.Total_Findings__c}</strong> Findings</span>
+                                    <span class="sep">&bull;</span>
+                                    <span><strong>{map.Total_Gaps__c}</strong> Gaps</span>
+                                    <span class="sep">&bull;</span>
+                                    <span><strong>{map.Total_Conflicts__c}</strong> Conflicts</span>
+                                </div>
+
+                                <!-- Card Footer -->
+                                <div class="card-footer">
+                                    <lightning-button
+                                        label="Open Workspace"
+                                        variant="brand"
+                                        data-id={map.Id}
+                                        onclick={handleLaunchWorkspace}
+                                        class="black-btn">
+                                    </lightning-button>
+                                    <lightning-button
+                                        label="Details"
+                                        variant="neutral"
+                                        data-id={map.Id}
+                                        onclick={handleNavigateToRecord}
+                                        class="slds-m-left_x-small">
+                                    </lightning-button>
+                                </div>
+                            </article>
+                        </div>
+                    </template>
+                </div>
+            </template>
+
+            <!-- Empty State -->
+            <template if:false={hasMaps}>
+                <div class="empty-state">
+                    <p class="empty-title">No Research Maps Found</p>
+                    <p class="empty-desc">No syntheses matched your search criteria.</p>
+                </div>
+            </template>
+        </template>
+
+        <!-- Topic Synthesizer Modal -->
+        <template if:true={isModalOpen}>
+            <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header modal-header">
+                        <button class="slds-button slds-button_icon slds-modal__close" onclick={closeSynthesizeModal}>
+                            <lightning-icon icon-name="utility:close" size="small"></lightning-icon>
+                        </button>
+                        <h2 class="modal-title">Synthesize New Research Topic</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium">
+                        <lightning-input
+                            label="Research Topic Title"
+                            required
+                            placeholder="e.g. Distributed Consensus in Edge Clusters..."
+                            value={newTopic}
+                            onchange={handleNewTopicChange}
+                            class="slds-m-bottom_medium">
+                        </lightning-input>
+                        <lightning-combobox
+                            label="Target Discipline"
+                            value={newDiscipline}
+                            options={disciplineOptions}
+                            onchange={handleNewDisciplineChange}>
+                        </lightning-combobox>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <lightning-button label="Cancel" onclick={closeSynthesizeModal} class="slds-m-right_small"></lightning-button>
+                        <lightning-button label="Synthesize &amp; Build Map" variant="brand" onclick={handleSynthesizeSubmit} disabled={isSynthesizing} class="black-btn"></lightning-button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+    </div>
+</template>

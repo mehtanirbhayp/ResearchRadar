@@ -71,12 +71,12 @@
                                         <td data-label="Inclusion Rationale &amp; Links">
                                             <p class="slds-text-body_small slds-m-bottom_xx-small">{row.rationale}</p>
                                             <template if:true={row.pdfUrl}>
-                                                <a href={row.pdfUrl} target="_blank" rel="noopener noreferrer" class="slds-button slds-button_outline-brand slds-m-right_xx-small custom-link-btn">
+                                                <a href={row.pdfUrl} target="_blank" rel="noopener noreferrer" class="custom-link-btn slds-m-right_xx-small">
                                                     PDF Source
                                                 </a>
                                             </template>
                                             <template if:true={row.openAccessUrl}>
-                                                <a href={row.openAccessUrl} target="_blank" rel="noopener noreferrer" class="slds-button slds-button_neutral custom-link-btn">
+                                                <a href={row.openAccessUrl} target="_blank" rel="noopener noreferrer" class="custom-link-btn">
                                                     Open Access
                                                 </a>
                                             </template>
@@ -89,10 +89,9 @@
                 </template>
 
                 <template if:false={hasPapers}>
-                    <div class="slds-p-around_large slds-text-align_center slds-box slds-theme_shade">
-                        <lightning-icon icon-name="utility:inbox" size="large" class="slds-m-bottom_small"></lightning-icon>
-                        <p class="slds-text-heading_small">No papers associated with this Research Map yet.</p>
-                        <p class="slds-text-color_weak slds-m-top_xx-small">Use the Topic Search engine above to retrieve and synthesize papers.</p>
+                    <div class="empty-state">
+                        <p class="empty-title">No papers associated with this Research Map yet.</p>
+                        <p class="empty-desc">Use the Topic Search engine above to retrieve and synthesize papers.</p>
                     </div>
                 </template>
             </template>

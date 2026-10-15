@@ -1,0 +1,115 @@
+<template>
+    <div class="workspace-wrapper">
+        <!-- Clean Minimalist Header -->
+        <header class="workspace-header">
+            <div class="meta-row">
+                <span class="tag-pill">{targetDiscipline}</span>
+                <span class="tag-pill">{mapStatus}</span>
+                <span class="meta-id">ID: {recordId}</span>
+            </div>
+            <h1 class="topic-title">{topicTitle}</h1>
+            <div class="stats-row">
+                <span class="stat-unit"><strong>{totalPapers}</strong> Papers</span>
+                <span class="stat-bullet">&bull;</span>
+                <span class="stat-unit"><strong>{totalFindings}</strong> Findings</span>
+                <span class="stat-bullet">&bull;</span>
+                <span class="stat-unit"><strong>{totalGaps}</strong> Gaps</span>
+                <span class="stat-bullet">&bull;</span>
+                <span class="stat-unit"><strong>{totalConflicts}</strong> Conflicts</span>
+            </div>
+        </header>
+
+        <!-- Minimalist Synthesis Summary -->
+        <template if:true={synthesisSummary}>
+            <section class="summary-section">
+                <h2 class="section-label">Synthesis Consensus</h2>
+                <p class="summary-body">{synthesisSummary}</p>
+            </section>
+        </template>
+
+        <!-- Clean Tabs Content -->
+        <div class="workspace-tabs-container">
+            <lightning-tabset variant="scoped" active-tab-value="graph">
+                <!-- Tab 1: Citation Network Graph -->
+                <lightning-tab label="Citation Network" value="graph" icon-name="utility:graph">
+                    <div class="tab-pane">
+                        <c-citation-network-graph record-id={recordId}></c-citation-network-graph>
+                    </div>
+                </lightning-tab>
+
+                <!-- Tab 2: Literature Comparison Matrix -->
+                <lightning-tab label="Literature Comparison" value="matrix" icon-name="utility:matrix">
+                    <div class="tab-pane">
+                        <c-literature-compare-matrix record-id={recordId}></c-literature-compare-matrix>
+                    </div>
+                </lightning-tab>
+
+                <!-- Tab 3: Gap & Experiment Tracker -->
+                <lightning-tab label="Gaps &amp; Experiments" value="gaps" icon-name="utility:experiment">
+                    <div class="tab-pane">
+                        <c-gap-experiment-tracker record-id={recordId}></c-gap-experiment-tracker>
+                    </div>
+                </lightning-tab>
+
+                <!-- Tab 4: Verified Evidence & Findings -->
+                <lightning-tab label="Verified Findings &amp; Evidence" value="findings" icon-name="utility:shield">
+                    <div class="tab-pane">
+                        <template if:true={hasFindings}>
+                            <div class="findings-list">
+                                <template for:each={findingsList} for:item="f">
+                                    <article key={f.Id} class="finding-item">
+                                        <div class="finding-meta">
+                                            <span class="tag-pill">{f.Verification_Status__c}</span>
+                                            <span class="meta-subtext">{f.Confidence_Score__c}% Confidence</span>
+                                        </div>
+                                        <h3 class="claim-title">{f.Claim_Summary__c}</h3>
+                                        <blockquote class="verbatim-quote">
+                                            &ldquo;{f.Exact_Quote__c}&rdquo;
+                                        </blockquote>
+                                        <div class="source-ref">
+                                            &mdash; {f.paperTitle} ({f.paperYear}), Section {f.Section_Name__c}, Page {f.Page_Number__c}
+                                        </div>
+                                    </article>
+                                </template>
+                            </div>
+                        </template>
+
+                        <!-- Literature Debates & Conflicts -->
+                        <template if:true={hasConflicts}>
+                            <div class="conflicts-section">
+                                <h3 class="section-label">Literature Debates &amp; Contradictions</h3>
+                                <div class="conflicts-list">
+                                    <template for:each={conflictsList} for:item="c">
+                                        <article key={c.Id} class="conflict-item">
+                                            <div class="conflict-meta">
+                                                <span class="tag-pill-dark">{c.Severity__c}</span>
+                                                <span class="conflict-topic">{c.Disagreement_Area__c}</span>
+                                            </div>
+                                            <p class="conflict-desc">{c.Conflict_Description__c}</p>
+                                            <div class="conflict-source">
+                                                <strong>Contradiction:</strong> {c.paperATitle} &bull; {c.paperBTitle}
+                                            </div>
+                                        </article>
+                                    </template>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </lightning-tab>
+
+                <!-- Tab 5: Record Details -->
+                <lightning-tab label="Record Details" value="details" icon-name="utility:record">
+                    <div class="tab-pane">
+                        <lightning-record-form
+                            record-id={recordId}
+                            object-api-name="Research_Map__c"
+                            layout-type="Full"
+                            columns="2"
+                            mode="view">
+                        </lightning-record-form>
+                    </div>
+                </lightning-tab>
+            </lightning-tabset>
+        </div>
+    </div>
+</template>
